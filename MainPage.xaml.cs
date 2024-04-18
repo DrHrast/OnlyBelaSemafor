@@ -32,31 +32,33 @@ namespace OnlyBelaSemafor
         //******************//
         //      METHODS     //
         //******************//
-        public void SetGameScore(string key)
+        public void SetGameScore(int key)
         {
             switch (key)
             {
-                case "Highest":
+                case 0:
                     points = ((int)UpToPoint.Highest);
                     break;
-                case "High":
+                case 1:
                     points = ((int)UpToPoint.High);
                     break;
-                case "Medium":
+                case 2:
                     points = ((int)UpToPoint.Medium);
                     break;
-                case "Low":
+                case 3:
                     points = ((int)UpToPoint.Low);
                     break;
-                case "Lowest":
+                case 4:
                     points = ((int)UpToPoint.Lowest);
                     break;
             }
+            GameScoreSetter();
         }
         public void SetTeamNames(string nameOne, string nameTwo)
         {
-            nameOfTheFirstTeam = nameOne;
-            nameOfTheSecondTeam = nameTwo;
+            nameOfTheFirstTeam = string.IsNullOrEmpty(nameOne) ? nameOfTheFirstTeam : nameOne;
+            nameOfTheSecondTeam = string.IsNullOrEmpty(nameTwo) ? nameOfTheSecondTeam : nameTwo;
+            TeamNameSetter();
         }
         public string GetTeamNames(int id)
         {
@@ -69,6 +71,11 @@ namespace OnlyBelaSemafor
                 default:
                     return string.Empty;
             }
+        }
+        private void GameScoreSetter()
+        {
+            //If score is higher than points value start new game with that points ceiling.
+            temp.Text = points.ToString();
         }
         private void TeamNameSetter()
         {
@@ -197,7 +204,7 @@ namespace OnlyBelaSemafor
         }
         private void GearImageButton_Clicked(object sender, EventArgs e)
         {
-            this.ShowPopup(new SettingsPopup());
+            this.ShowPopup(new SettingsPopup(this));
         }
 
         //******************//
@@ -208,6 +215,7 @@ namespace OnlyBelaSemafor
             InitializeComponent();
             points = ((int)UpToPoint.High);
             TeamNameSetter();
+            temp.Text = "1001";
         }
 
     }

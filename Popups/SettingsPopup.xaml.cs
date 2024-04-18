@@ -4,14 +4,19 @@ namespace OnlyBelaSemafor;
 
 public partial class SettingsPopup : Popup
 {
+    string teamOneName;
+    string teamTwoName;
+    private readonly MainPage mainPage;
+
     private void CloseButton_Clicked(object sender, EventArgs e)
     {
 		this.Close();
     }
 
-	public SettingsPopup()
+	public SettingsPopup(MainPage mainPage)
 	{
 		InitializeComponent();
+        this.mainPage = mainPage;
 	}
 
     private void SetTeamsButton_Clicked(object sender, EventArgs e)
@@ -25,6 +30,7 @@ public partial class SettingsPopup : Popup
         var label2 = new Label { Text = "Drugi tim:", Margin = new Thickness(5) };
         var entry2 = new Entry { Placeholder = "Ime drugog tima", Margin = new Thickness(5) };
         var nameButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10) };
+        nameButton.Clicked += OnNameSaveButtonClicked;
 
         // Create a layout to hold the content
         var layout = new StackLayout();
@@ -36,6 +42,25 @@ public partial class SettingsPopup : Popup
 
         // Set the content of the settingsDiv
         settingsDiv.Content = layout;
+
+        void OnNameSaveButtonClicked(object? sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(entry1.Text) && !string.IsNullOrEmpty(entry2.Text))
+            {
+                teamOneName = entry1.Text;
+                teamTwoName = entry2.Text;
+            }
+            else if (!string.IsNullOrEmpty(entry1.Text))
+            {
+                teamOneName = entry1.Text;
+            }
+            else if (!string.IsNullOrEmpty(entry2.Text))
+            {
+                teamTwoName = entry2.Text;
+            }
+            mainPage.SetTeamNames(teamOneName, teamTwoName);
+            this.Close();
+        }   
     }
 
     private void SetScoresButton_Clicked(object sender, EventArgs e)
@@ -49,7 +74,8 @@ public partial class SettingsPopup : Popup
         var radioButton3 = new RadioButton { Content = "701" };
         var radioButton4 = new RadioButton { Content = "501" };
         var radioButton5 = new RadioButton { Content = "301" };
-        var nameButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10)};
+        var scoreButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10)};
+        scoreButton.Clicked += ScoreButton_Clicked;
 
         // Create a layout to hold the content
         var layout = new StackLayout();
@@ -58,16 +84,25 @@ public partial class SettingsPopup : Popup
         layout.Children.Add(radioButton3);
         layout.Children.Add(radioButton4);
         layout.Children.Add(radioButton5);
-        layout.Children.Add(nameButton);
+        layout.Children.Add(scoreButton);
 
         // Set the content of the settingsDiv
         settingsDiv.Content = layout;
+    
+        void ScoreButton_Clicked(object? sender, EventArgs e)
+        {
+            if (radioButton1.IsChecked) mainPage.SetGameScore(0);
+            else if (radioButton2.IsChecked) mainPage.SetGameScore(1);
+            else if (radioButton3.IsChecked) mainPage.SetGameScore(2);
+            else if (radioButton4.IsChecked) mainPage.SetGameScore(3);
+            else if (radioButton5.IsChecked) mainPage.SetGameScore(4);
+            this.Close();
+        }
     }
 
     private void DeleteLastResultButton_Clicked(object sender, EventArgs e)
     {
         // For now, do nothing when the button is clicked
         // You can add functionality to delete the last result here in the future
-    }
-
+    }   
 }
