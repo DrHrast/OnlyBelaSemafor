@@ -11,6 +11,7 @@ namespace OnlyBelaSemafor
         //******************//
         //     VARIABLES    //
         //******************//
+        private DatabaseManager databaseManager;
 
         //Enum of score steps
         private enum UpToPoint
@@ -75,7 +76,7 @@ namespace OnlyBelaSemafor
         private void GameScoreSetter()
         {
             //If score is higher than points value start new game with that points ceiling.
-            temp.Text = points.ToString();
+            //temp.Text = points.ToString();
         }
         private void TeamNameSetter()
         {
@@ -110,6 +111,109 @@ namespace OnlyBelaSemafor
             teamThatCalled = false;
             isTeamCallChecked = false;
         }
+        //private void ResultOutput(ResultModel result)
+        //{
+        //    //CheckTeamThatCalled();
+        //    var temp = new List<List<int>>();
+        //    temp.Add(resultService.SumResults(result));
+        //    bool oneHasBetterScore = temp[0][0] > temp[0][1];
+        //    bool twoHasBetterScore = temp[0][0] < temp[0][1];
+        //    if (isTeamCallChecked == true)
+        //    {
+        //        if (listOfGameResults.Count == 0)
+        //        {
+        //            if (teamThatCalled && oneHasBetterScore)
+        //            {
+        //                listOfGameResults.Add(temp[0]);
+        //            }
+        //            else if (teamThatCalled && !oneHasBetterScore)
+        //            {
+        //                listOfGameResults.Add([0, temp[0][0] + temp[0][1]]);
+        //            }
+        //            else if (!teamThatCalled && !twoHasBetterScore)
+        //            {
+        //                listOfGameResults.Add([temp[0][0] + temp[0][1], 0]);
+        //            }
+        //            else if (!teamThatCalled && twoHasBetterScore)
+        //            {
+        //                listOfGameResults.Add(temp[0]);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            int lastIndex = listOfGameResults.Count - 1;
+        //            if (teamThatCalled && oneHasBetterScore)
+        //            {
+        //                listOfGameResults.Add(
+        //                    [temp[0][0] + listOfGameResults[lastIndex][0],
+        //                        temp[0][1] + listOfGameResults[lastIndex][1]]
+        //                );
+        //            }
+        //            else if (teamThatCalled && !oneHasBetterScore)
+        //            {
+        //                listOfGameResults.Add(
+        //                    [0 + listOfGameResults[lastIndex][0],
+        //                        temp[0][0] + temp[0][1] + listOfGameResults[lastIndex][1]]);
+        //            }
+        //            else if (!teamThatCalled && !twoHasBetterScore)
+        //            {
+        //                listOfGameResults.Add(
+        //                    [temp[0][0] + temp[0][1] + listOfGameResults[lastIndex][0],
+        //                        0 + listOfGameResults[lastIndex][1]]);
+        //            }
+        //            else if (!teamThatCalled && twoHasBetterScore)
+        //            {
+        //                listOfGameResults.Add(
+        //                    [temp[0][0] + listOfGameResults[lastIndex][0],
+        //                        temp[0][1] + listOfGameResults[lastIndex][1]]
+        //                );
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (listOfGameResults.Count == 0)
+        //        {
+        //            listOfGameResults.Add(temp[0]);
+        //        }
+        //        else
+        //        {
+        //            int lastIndex = listOfGameResults.Count - 1;
+        //            listOfGameResults.Add(
+        //                [temp[0][0] + listOfGameResults[lastIndex][0],
+        //                    temp[0][1] + listOfGameResults[lastIndex][1]]
+        //            );
+        //        }
+        //    }
+
+        //    Output();
+        //}
+
+        //private void Output()
+        //{
+        //    var team1 = listOfGameResults[listOfGameResults.Count - 1][0];
+        //    var team2 = listOfGameResults[listOfGameResults.Count - 1][1];
+        //    resultOneOutput = "";
+        //    resultTwoOutput = "";
+        //    foreach (var rez in listOfGameResults)
+        //    {
+        //        resultOneOutput = $"{rez[0]}\n" + resultOneOutput;
+        //        resultTwoOutput = $"{rez[1]}\n" + resultTwoOutput;
+        //    }
+        //    team1Result.Text = resultOneOutput;
+        //    team2Result.Text = resultTwoOutput;
+        //    if (team1 >= points || team2 >= points)
+        //    {
+        //        if (team1 >= points)
+        //        {
+        //            this.ShowPopup(new VictoryPopup(firstTeamName));
+        //        }
+        //        else
+        //        {
+        //            this.ShowPopup(new VictoryPopup(secondTeamName));
+        //        }
+        //    }
+        //}
 
         //******************//
         //      EVENTS      //
@@ -182,6 +286,8 @@ namespace OnlyBelaSemafor
             {
                 ResultModel result = new ResultModel()
                 {
+                    team1Name = nameOfTheFirstTeam,
+                    team2Name = nameOfTheSecondTeam,
                     team1Score = string.IsNullOrEmpty(teamOneScoreEntry.Text) ? 0 : int.Parse(teamOneScoreEntry.Text),
                     team2Score = string.IsNullOrEmpty(teamTwoScoreEntry.Text) ? 0 : int.Parse(teamTwoScoreEntry.Text),
                     team1Bela = teamOneBelaCheck.IsChecked == true ? 20 : 0,
@@ -210,13 +316,13 @@ namespace OnlyBelaSemafor
         //******************//
         //       MAIN       //
         //******************//
-        public MainPage()
+        public MainPage(DatabaseManager databaseManager)
         {
             InitializeComponent();
             points = ((int)UpToPoint.High);
             TeamNameSetter();
             temp.Text = "1001";
+            this.databaseManager = databaseManager;
         }
-
     }
 }

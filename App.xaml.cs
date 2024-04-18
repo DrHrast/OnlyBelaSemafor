@@ -5,8 +5,10 @@
         public App()
         {
             InitializeComponent();
-
-            MainPage = new AppShell();
+            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "rezultsDb.db3");
+            var databaseManager = new DatabaseManager(dbPath);
+                                  
+            MainPage = new AppShell(databaseManager);
         }
     }
 }

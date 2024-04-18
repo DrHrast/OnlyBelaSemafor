@@ -2,9 +2,16 @@
 {
     public partial class AppShell : Shell
     {
-        public AppShell()
+        private readonly DatabaseManager databaseManager;
+
+        public AppShell(DatabaseManager databaseManager)
         {
             InitializeComponent();
+            this.databaseManager = databaseManager;
+
+            var database = databaseManager;
+
+            var main = new MainPage(database);
         }
     }
 }
