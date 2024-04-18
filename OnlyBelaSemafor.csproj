@@ -75,7 +75,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Include="Text\UserInstructions.txt" />
+	  <MauiAsset Include="UserInstructions.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Text\" />
 	</ItemGroup>
 
 </Project>

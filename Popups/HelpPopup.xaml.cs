@@ -11,7 +11,7 @@ public partial class HelpPopup : Popup
 
     private void LoadHelpText()
     {
-        string filePath = "..\\Text\\UserInstructions.txt";
+        string filePath = "..\\UserInstructions.txt";
 
         if (File.Exists(filePath))
         {

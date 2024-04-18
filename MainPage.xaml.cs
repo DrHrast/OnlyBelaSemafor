@@ -2,7 +2,6 @@
 using OnlyBelaSemafor.Services;
 using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
-using Android.Text;
 
 namespace OnlyBelaSemafor
 {
