@@ -1,16 +1,32 @@
 using CommunityToolkit.Maui.Views;
 
-namespace OnlyBelaSemafor.Popups;
+namespace OnlyBelaSemafor;
 
-public partial class HelpPopup : ContentPage
+public partial class HelpPopup : Popup
 {
-    private void Button_Clicked(object sender, EventArgs e)
+    private void CloseButton_Clicked(object sender, EventArgs e)
     {
-        //this.Close();
+        this.Close();
+    }
+
+    private void LoadHelpText()
+    {
+        string filePath = "..\\Text\\UserInstructions.txt";
+
+        if (File.Exists(filePath))
+        {
+            string helpText = File.ReadAllText(filePath);
+            helpMessage.Text = helpText;
+        }
+        else
+        {
+            helpMessage.Text = "Error 404: helpText not found.";
+        }
     }
 
     public HelpPopup()
 	{
-		//InitializeComponent();
+        InitializeComponent();
+        LoadHelpText();
 	}
 }

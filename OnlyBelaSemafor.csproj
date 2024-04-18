@@ -69,6 +69,13 @@
 	  <MauiXaml Update="Popups\HelpPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Popups\SettingsPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Include="Text\UserInstructions.txt" />
 	</ItemGroup>
 
 </Project>

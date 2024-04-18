@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using OnlyBelaSemafor;
 
 namespace OnlyBelaSemafor;
 
@@ -21,6 +20,9 @@ public static class MauiProgram
             });
 
         // Continue initializing your .NET MAUI App here
+#if DEBUG
+        builder.Logging.AddDebug();
+#endif
 
         return builder.Build();
     }

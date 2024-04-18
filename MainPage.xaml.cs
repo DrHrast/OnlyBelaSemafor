@@ -1,4 +1,8 @@
 ﻿using OnlyBelaSemafor.Models;
+using OnlyBelaSemafor.Services;
+using CommunityToolkit.Maui.Views;
+using Microsoft.Maui.Controls;
+using Android.Text;
 
 namespace OnlyBelaSemafor
 {
@@ -29,6 +33,44 @@ namespace OnlyBelaSemafor
         //******************//
         //      METHODS     //
         //******************//
+        public void SetGameScore(string key)
+        {
+            switch (key)
+            {
+                case "Highest":
+                    points = ((int)UpToPoint.Highest);
+                    break;
+                case "High":
+                    points = ((int)UpToPoint.High);
+                    break;
+                case "Medium":
+                    points = ((int)UpToPoint.Medium);
+                    break;
+                case "Low":
+                    points = ((int)UpToPoint.Low);
+                    break;
+                case "Lowest":
+                    points = ((int)UpToPoint.Lowest);
+                    break;
+            }
+        }
+        public void SetTeamNames(string nameOne, string nameTwo)
+        {
+            nameOfTheFirstTeam = nameOne;
+            nameOfTheSecondTeam = nameTwo;
+        }
+        public string GetTeamNames(int id)
+        {
+            switch(id)
+            {
+                case 0:
+                    return nameOfTheFirstTeam;
+                case 1:
+                    return nameOfTheSecondTeam;
+                default:
+                    return string.Empty;
+            }
+        }
         private void TeamNameSetter()
         {
             nameOfTeam1.Content = nameOfTheFirstTeam;
@@ -150,6 +192,14 @@ namespace OnlyBelaSemafor
         //******************//
         //    NAVIGATION    //
         //******************//
+        private void HelpImageButton_Clicked(object sender, EventArgs e)
+        {
+            this.ShowPopup(new HelpPopup());
+        }
+        private void GearImageButton_Clicked(object sender, EventArgs e)
+        {
+            this.ShowPopup(new SettingsPopup());
+        }
 
         //******************//
         //       MAIN       //
@@ -160,5 +210,6 @@ namespace OnlyBelaSemafor
             points = ((int)UpToPoint.High);
             TeamNameSetter();
         }
+
     }
 }

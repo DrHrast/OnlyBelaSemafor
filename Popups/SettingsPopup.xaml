@@ -2,8 +2,8 @@
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               x:Class="OnlyBelaSemafor.HelpPopup"
-               Size="300, 500">
+               x:Class="OnlyBelaSemafor.SettingsPopup"
+               Size="300, 400">
 
     <!--<VerticalStackLayout>
             <Label Text="This is a very important message!" />
@@ -13,7 +13,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <!--Header-->
         <Frame Grid.Row="0" Margin="5, 5, 5, 5" CornerRadius="8" BackgroundColor="DarkGray" Padding="0">
             <Grid>
@@ -21,18 +21,27 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
-                <Label Text="Upute za korištenje:" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" Margin="10, 0"/>
+                <Label Text="Postavke:" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" Margin="10, 0"/>
                 <ImageButton Source="close_popup.png" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Clicked="CloseButton_Clicked" Scale="0.5"/>
             </Grid>
         </Frame>
-        
+
         <!--Body-->
         <Frame Grid.Row="1" Margin="5, 0, 5, 5" CornerRadius="8" BackgroundColor="LightGray" Padding="0">
-            <Grid>
-                <ScrollView>
-                    <Label x:Name="helpMessage" Margin="5"/>
-                </ScrollView>
-            </Grid>
+            <ScrollView>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/> <!--Set team name-->
+                        <RowDefinition Height="auto"/> <!--Delete last score-->
+                        <RowDefinition Height="auto"/> <!--Something-->
+                        <RowDefinition Height="auto"/> <!--Set playing score-->
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Margin="12" Text="Postavi timove" Clicked="SetTeamsButton_Clicked"/>
+                    <Button Grid.Row="1" Margin="12" Text="Postavi bodove" Clicked="SetScoresButton_Clicked"/>
+                    <Button Grid.Row="2" Margin="12" Text="Obriši zadnji rezultat" Clicked="DeleteLastResultButton_Clicked"/>
+                    <Frame Grid.Row="3" x:Name="settingsDiv"/>
+                </Grid>
+            </ScrollView>
         </Frame>
     </Grid>
 
