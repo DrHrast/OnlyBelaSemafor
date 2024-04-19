@@ -20,7 +20,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <ImageButton Source="round_plus_button_sized.png" Scale="0.5" Grid.Column="0"/>
+                <ImageButton Source="round_plus_button_sized.png" Scale="0.5" Grid.Column="0" Clicked="PlusImageButton_Clicked"/>
                 <Label Text="BELA SEMAFOR" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1"/>
                 <ImageButton Source="round_question_mark_sized.png" Grid.Column="2" Scale="0.4" Clicked="HelpImageButton_Clicked"/>
                 <ImageButton Source="gear_button_sized.png" Grid.Column="3" Scale="0.4" Clicked="GearImageButton_Clicked"/>
@@ -205,9 +205,13 @@
                             Padding="10"
                             Clicked="AddButton_Clicked"/>
                 </Grid>
-                <Grid Grid.Row="2">
-                    <Label x:Name="temp"/>
-                </Grid>
+                <TableView x:Name="scoreContent" Grid.Row="2">
+                    <TableRoot>
+                        <TableSection x:Name="Scores">
+                            
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
             </Grid>
         </Frame>
     </Grid>

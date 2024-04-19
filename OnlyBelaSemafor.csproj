@@ -57,6 +57,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Text\**" />
+	  <Compile Remove="Text\**" />
+	  <EmbeddedResource Remove="Text\**" />
+	  <MauiCss Remove="Text\**" />
+	  <MauiXaml Remove="Text\**" />
+	  <None Remove="Text\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
@@ -77,10 +86,6 @@
 
 	<ItemGroup>
 	  <MauiAsset Include="UserInstructions.txt" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Text\" />
 	</ItemGroup>
 
 </Project>

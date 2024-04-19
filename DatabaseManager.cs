@@ -43,5 +43,11 @@ namespace OnlyBelaSemafor
         {
             return database.Table<ResultModel>().ToList();
         }
+
+        //TODO: This does not clear database
+        public void ClearDb()
+        {
+            database.Execute("DELETE FROM ResultModel");
+        }
     }
 }

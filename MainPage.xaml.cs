@@ -22,7 +22,7 @@ namespace OnlyBelaSemafor
             Low = 501,
             Lowest = 301
         }
-
+        List<List<int>> listOfGameResults = new List<List<int>>();
         private const int GAME = 162;
         private int points;
         private string nameOfTheFirstTeam = "TeamOne";
@@ -111,84 +111,132 @@ namespace OnlyBelaSemafor
             teamThatCalled = false;
             isTeamCallChecked = false;
         }
-        //private void ResultOutput(ResultModel result)
-        //{
-        //    //CheckTeamThatCalled();
-        //    var temp = new List<List<int>>();
-        //    temp.Add(resultService.SumResults(result));
-        //    bool oneHasBetterScore = temp[0][0] > temp[0][1];
-        //    bool twoHasBetterScore = temp[0][0] < temp[0][1];
-        //    if (isTeamCallChecked == true)
-        //    {
-        //        if (listOfGameResults.Count == 0)
-        //        {
-        //            if (teamThatCalled && oneHasBetterScore)
-        //            {
-        //                listOfGameResults.Add(temp[0]);
-        //            }
-        //            else if (teamThatCalled && !oneHasBetterScore)
-        //            {
-        //                listOfGameResults.Add([0, temp[0][0] + temp[0][1]]);
-        //            }
-        //            else if (!teamThatCalled && !twoHasBetterScore)
-        //            {
-        //                listOfGameResults.Add([temp[0][0] + temp[0][1], 0]);
-        //            }
-        //            else if (!teamThatCalled && twoHasBetterScore)
-        //            {
-        //                listOfGameResults.Add(temp[0]);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            int lastIndex = listOfGameResults.Count - 1;
-        //            if (teamThatCalled && oneHasBetterScore)
-        //            {
-        //                listOfGameResults.Add(
-        //                    [temp[0][0] + listOfGameResults[lastIndex][0],
-        //                        temp[0][1] + listOfGameResults[lastIndex][1]]
-        //                );
-        //            }
-        //            else if (teamThatCalled && !oneHasBetterScore)
-        //            {
-        //                listOfGameResults.Add(
-        //                    [0 + listOfGameResults[lastIndex][0],
-        //                        temp[0][0] + temp[0][1] + listOfGameResults[lastIndex][1]]);
-        //            }
-        //            else if (!teamThatCalled && !twoHasBetterScore)
-        //            {
-        //                listOfGameResults.Add(
-        //                    [temp[0][0] + temp[0][1] + listOfGameResults[lastIndex][0],
-        //                        0 + listOfGameResults[lastIndex][1]]);
-        //            }
-        //            else if (!teamThatCalled && twoHasBetterScore)
-        //            {
-        //                listOfGameResults.Add(
-        //                    [temp[0][0] + listOfGameResults[lastIndex][0],
-        //                        temp[0][1] + listOfGameResults[lastIndex][1]]
-        //                );
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (listOfGameResults.Count == 0)
-        //        {
-        //            listOfGameResults.Add(temp[0]);
-        //        }
-        //        else
-        //        {
-        //            int lastIndex = listOfGameResults.Count - 1;
-        //            listOfGameResults.Add(
-        //                [temp[0][0] + listOfGameResults[lastIndex][0],
-        //                    temp[0][1] + listOfGameResults[lastIndex][1]]
-        //            );
-        //        }
-        //    }
+        private void ResultOutput(ResultModel result)
+        {
+            ResultService resultService = new ResultService();
+            var temp = new List<List<int>>();
+            temp.Add(resultService.SumResults(result));
+            bool oneHasBetterScore = temp[0][0] > temp[0][1];
+            bool twoHasBetterScore = temp[0][0] < temp[0][1];
+            if (isTeamCallChecked == true)
+            {
+                if (listOfGameResults.Count == 0)
+                {
+                    if (teamThatCalled && oneHasBetterScore)
+                    {
+                        listOfGameResults.Add(temp[0]);
+                    }
+                    else if (teamThatCalled && !oneHasBetterScore)
+                    {
+                        listOfGameResults.Add([0, temp[0][0] + temp[0][1]]);
+                    }
+                    else if (!teamThatCalled && !twoHasBetterScore)
+                    {
+                        listOfGameResults.Add([temp[0][0] + temp[0][1], 0]);
+                    }
+                    else if (!teamThatCalled && twoHasBetterScore)
+                    {
+                        listOfGameResults.Add(temp[0]);
+                    }
+                }
+                else
+                {
+                    int lastIndex = listOfGameResults.Count - 1;
+                    if (teamThatCalled && oneHasBetterScore)
+                    {
+                        listOfGameResults.Add(
+                            [temp[0][0] + listOfGameResults[lastIndex][0],
+                                temp[0][1] + listOfGameResults[lastIndex][1]]
+                        );
+                    }
+                    else if (teamThatCalled && !oneHasBetterScore)
+                    {
+                        listOfGameResults.Add(
+                            [0 + listOfGameResults[lastIndex][0],
+                                temp[0][0] + temp[0][1] + listOfGameResults[lastIndex][1]]);
+                    }
+                    else if (!teamThatCalled && !twoHasBetterScore)
+                    {
+                        listOfGameResults.Add(
+                            [temp[0][0] + temp[0][1] + listOfGameResults[lastIndex][0],
+                                0 + listOfGameResults[lastIndex][1]]);
+                    }
+                    else if (!teamThatCalled && twoHasBetterScore)
+                    {
+                        listOfGameResults.Add(
+                            [temp[0][0] + listOfGameResults[lastIndex][0],
+                                temp[0][1] + listOfGameResults[lastIndex][1]]
+                        );
+                    }
+                }
+            }
+            else
+            {
+                if (listOfGameResults.Count == 0)
+                {
+                    listOfGameResults.Add(temp[0]);
+                }
+                else
+                {
+                    int lastIndex = listOfGameResults.Count - 1;
+                    listOfGameResults.Add(
+                        [temp[0][0] + listOfGameResults[lastIndex][0],
+                            temp[0][1] + listOfGameResults[lastIndex][1]]
+                    );
+                }
+            }
 
-        //    Output();
-        //}
+            int listsLastIndex = listOfGameResults.Count - 1;
+            result.team1TotalScore = listOfGameResults[listsLastIndex][0];
+            result.team2TotalScore = listOfGameResults[listsLastIndex][1];
+            databaseManager.AddTeam(result);
+            Output();
+        }
+        private void Output()
+        {
+            var lastResults = databaseManager.GetTeams();
 
+            var tableSection = new TableSection("Scores");
+
+            foreach (var result in lastResults)
+            {
+                var grid = new Grid
+                {
+                    Padding = new Thickness(10),
+                    ColumnDefinitions =
+                        {
+                            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                        }
+                };
+                //var team1Header = new Label { Text = nameOfTheFirstTeam, VerticalOptions = LayoutOptions.CenterAndExpand };
+                //var team2Header = new Label { Text = nameOfTheSecondTeam, VerticalOptions = LayoutOptions.CenterAndExpand };
+
+                //headerGrid.Children.Add(team1Header);
+                //headerGrid.Children.Add(team2Header);
+
+                //Grid.SetColumn(team1Header, 0);
+                //Grid.SetColumn(team2Header, 1);
+
+                //var headerCell = new ViewCell { View = headerGrid };
+                //tableSection.Add(headerCell);
+
+                var team1Label = new Label { Text = result.team1TotalScore.ToString(), VerticalOptions = LayoutOptions.Center };
+                var team2Label = new Label { Text = result.team2TotalScore.ToString(), VerticalOptions = LayoutOptions.Center };
+
+                grid.Children.Add(team1Label);
+                grid.Children.Add(team2Label);
+
+                Grid.SetColumn(team1Label, 0);
+                Grid.SetColumn(team2Label, 1);
+
+                var viewCell = new ViewCell { View = grid };
+                tableSection.Add(viewCell);
+            }
+
+            scoreContent.Root.Clear();
+            scoreContent.Root.Add(tableSection);
+        }
         //private void Output()
         //{
         //    var team1 = listOfGameResults[listOfGameResults.Count - 1][0];
@@ -296,9 +344,14 @@ namespace OnlyBelaSemafor
                     team2Call = string.IsNullOrEmpty(teamTwoCallEntry.Text) ? 0 : int.Parse(teamTwoCallEntry.Text)
                 };
 
-                //ResultOutput(result);
+                ResultOutput(result);
                 ClearingInputs();
             }
+        }
+        private void PlusImageButton_Clicked(object sender, EventArgs e)
+        {
+            databaseManager.ClearDb();
+            Output();
         }
 
         //******************//
@@ -325,7 +378,9 @@ namespace OnlyBelaSemafor
 
             points = ((int)UpToPoint.High);
             TeamNameSetter();
-            temp.Text = "1001";
+            //temp.Text = "1001";
+            Output();
         }
+
     }
 }

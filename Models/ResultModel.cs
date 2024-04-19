@@ -19,10 +19,12 @@ namespace OnlyBelaSemafor.Models
         public int team1Score { get; set; }
         public int team1Call { get; set; }
         public int team1Bela { get; set; }
+        public int team1TotalScore { get; set; }
         public string team2Name { get; set; }
         public int team2Score { get; set; }
         public int team2Call { get; set; }
         public int team2Bela { get; set; }
+        public int team2TotalScore { get; set; }
         //public int team1Stilja { get; set;}
         //public int team2Stilja { get; set;}
     }
