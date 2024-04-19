@@ -18,7 +18,23 @@ namespace OnlyBelaSemafor
         {
             database = new SQLiteConnection(dbPath);
             database.CreateTable<ResultModel>();
+            database.CreateTable<SettingsModel>();
+
+            var settingsCount = database.Table<SettingsModel>().Count();
+            if (settingsCount == 0)
+            {
+                // If table is empty, insert the initial row
+                database.Insert(new SettingsModel
+                {
+                    victoryScore = 1001,
+                    darkLayoutMode = false
+                });
+            }
         }
+
+        //******************//
+        //      RESULT      //
+        //******************//
 
         public void AddTeam(ResultModel result)
         {
@@ -49,6 +65,11 @@ namespace OnlyBelaSemafor
         public List<ResultModel> GetTeams()
         {
             return database.Table<ResultModel>().ToList();
+        }
+        
+        public List<ResultModel> GetTeamsDesc()
+        {
+            return database.Table<ResultModel>().OrderByDescending(t => t.Id).ToList();
         }
 
         public ResultModel LastRow()
@@ -86,6 +107,25 @@ namespace OnlyBelaSemafor
         public void ClearDb()
         {
             database.Execute("DELETE FROM ResultModel");
+        }
+
+        //******************//
+        //     SETTINGS     //
+        //******************//
+
+        public void AddSettings(SettingsModel settingsModel)
+        {
+            database.Insert(settingsModel);
+        }
+
+        public SettingsModel GetLastSetting()
+        {
+            return database.Table<SettingsModel>().OrderByDescending(sett => sett.Id).FirstOrDefault();
+        }
+
+        public SettingsModel GetDefaultSetting()
+        {
+            return database.Table<SettingsModel>().FirstOrDefault();
         }
     }
 }

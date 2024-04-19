@@ -31,15 +31,35 @@
             <ScrollView>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/> <!--Set team name-->
+                        <RowDefinition Height="80"/> <!--Set team name-->
                         <RowDefinition Height="auto"/> <!--Delete last score-->
-                        <RowDefinition Height="auto"/> <!--Something-->
                         <RowDefinition Height="auto"/> <!--Set playing score-->
+                        <RowDefinition Height="auto"/> <!--Layout Mode-->
+                        <RowDefinition Height="auto"/> <!--Something-->
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Margin="12" Text="Postavi timove" Clicked="SetTeamsButton_Clicked"/>
-                    <Button Grid.Row="1" Margin="12" Text="Postavi bodove" Clicked="SetScoresButton_Clicked"/>
-                    <Button Grid.Row="2" Margin="12" Text="Obriši zadnji rezultat" Clicked="DeleteLastResultButton_Clicked"/>
-                    <Frame Grid.Row="3" x:Name="settingsDiv" BackgroundColor="LightGray"/>
+                    <Grid Grid.Row="0" Margin="2, 2, 2, 12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="Način rada:" HorizontalOptions="Start" VerticalOptions="Center"/>
+                        <Image Grid.Column="1" 
+                               Source="sun_switch_sized.png" 
+                               Scale="0.3" Margin="2" 
+                               HorizontalOptions="End"/>
+                        <Switch Grid.Column="2" IsToggled="False" Margin="0" x:Name="isDarkModeSwitch"/>
+                        <Image Grid.Column="3" 
+                               Source="moon_switch_sized.png" 
+                               Scale="0.25"                              
+                               Margin="2" 
+                               HorizontalOptions="Start"/>
+                    </Grid>
+                    <Button Grid.Row="1" Margin="12" Text="Postavi timove" Clicked="SetTeamsButton_Clicked"/>
+                    <Button Grid.Row="2" Margin="12" Text="Postavi bodove" Clicked="SetScoresButton_Clicked"/>
+                    <Button Grid.Row="3" Margin="12" Text="Obriši zadnji rezultat" Clicked="DeleteLastResultButton_Clicked"/>
+                    <Frame Grid.Row="4" x:Name="settingsDiv" BackgroundColor="LightGray" BorderColor="LightGray" Margin="5"/>
                 </Grid>
             </ScrollView>
         </Frame>

@@ -221,7 +221,7 @@ namespace OnlyBelaSemafor
         }
         private void Output()
         {
-            var lastResults = databaseManager.GetTeams();
+            var lastResults = databaseManager.GetTeamsDesc();
 
             var tableSection = new TableSection();
 
@@ -248,8 +248,18 @@ namespace OnlyBelaSemafor
                 //var headerCell = new ViewCell { View = headerGrid };
                 //tableSection.Add(headerCell);
 
-                var team1Label = new Label { Text = result.team1TotalScore.ToString(), VerticalOptions = LayoutOptions.Center };
-                var team2Label = new Label { Text = result.team2TotalScore.ToString(), VerticalOptions = LayoutOptions.Center };
+                var team1Label = new Label 
+                {
+                    Text = result.team1TotalScore.ToString(),
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                };
+                var team2Label = new Label 
+                { 
+                    Text = result.team2TotalScore.ToString(), 
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center
+                };
 
                 grid.Children.Add(team1Label);
                 grid.Children.Add(team2Label);

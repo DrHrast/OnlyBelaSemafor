@@ -4,20 +4,37 @@ namespace OnlyBelaSemafor;
 
 public partial class SettingsPopup : Popup
 {
+	public SettingsPopup(MainPage mainPage)
+	{
+		InitializeComponent();
+        this.mainPage = mainPage;
+	}
+
     string teamOneName;
     string teamTwoName;
     private readonly MainPage mainPage;
+    private Dictionary<string, int> settings = new Dictionary<string, int>()
+    {
+        { "victoryScore", -1 },
+        { "darkLayoutMode", -1 }
+    };
+
+    private void CloseWindow()
+    {
+        foreach(var value in settings.Values)
+        {
+            if (value != -1)
+            {
+
+            }
+        }
+    }
 
     private void CloseButton_Clicked(object sender, EventArgs e)
     {
 		this.Close();
     }
 
-	public SettingsPopup(MainPage mainPage)
-	{
-		InitializeComponent();
-        this.mainPage = mainPage;
-	}
 
     private void SetTeamsButton_Clicked(object sender, EventArgs e)
     {
@@ -27,9 +44,9 @@ public partial class SettingsPopup : Popup
 
         // Create content for setting teams (example: labels and entries)
         var label1 = new Label { Text = "Prvi Tim:", Margin = new Thickness(5) };
-        var entry1 = new Entry { Placeholder = "Ime prvog tima", Margin = new Thickness(5) };
+        var entry1 = new Entry { Placeholder = "Ime prvog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text};
         var label2 = new Label { Text = "Drugi tim:", Margin = new Thickness(5) };
-        var entry2 = new Entry { Placeholder = "Ime drugog tima", Margin = new Thickness(5) };
+        var entry2 = new Entry { Placeholder = "Ime drugog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text};
         var nameButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10) };
         nameButton.Clicked += OnNameSaveButtonClicked;
 
@@ -92,19 +109,17 @@ public partial class SettingsPopup : Popup
     
         void ScoreButton_Clicked(object? sender, EventArgs e)
         {
-            if (radioButton1.IsChecked) mainPage.SetGameScore(0);
-            else if (radioButton2.IsChecked) mainPage.SetGameScore(1);
-            else if (radioButton3.IsChecked) mainPage.SetGameScore(2);
-            else if (radioButton4.IsChecked) mainPage.SetGameScore(3);
-            else if (radioButton5.IsChecked) mainPage.SetGameScore(4);
+            if (radioButton1.IsChecked) settings.Add("victoryScore", 1301);
+            else if (radioButton2.IsChecked) settings.Add("victoryScore", 1001);
+            else if (radioButton3.IsChecked) settings.Add("victoryScore", 701);
+            else if (radioButton4.IsChecked) settings.Add("victoryScore", 501);
+            else if (radioButton5.IsChecked) settings.Add("victoryScore", 301);
             this.Close();
         }
     }
 
     private void DeleteLastResultButton_Clicked(object sender, EventArgs e)
     {
-        // For now, do nothing when the button is clicked
-        // You can add functionality to delete the last result here in the future
         mainPage.DeleteLastResult();
         this.Close();
     }   
