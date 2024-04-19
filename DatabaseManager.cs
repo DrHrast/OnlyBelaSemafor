@@ -10,9 +10,10 @@ namespace OnlyBelaSemafor
 {
     public class DatabaseManager
     {
+        string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "rezultsDb.db3");
         readonly SQLiteConnection database;
 
-        public DatabaseManager(string dbPath)
+        public DatabaseManager()
         {
             database = new SQLiteConnection(dbPath);
             database.CreateTable<ResultModel>();

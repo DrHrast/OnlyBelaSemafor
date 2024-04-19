@@ -316,13 +316,16 @@ namespace OnlyBelaSemafor
         //******************//
         //       MAIN       //
         //******************//
-        public MainPage(DatabaseManager databaseManager)
+        public MainPage()
         {
+
             InitializeComponent();
+
+            databaseManager = App.Current.Services.GetRequiredService<DatabaseManager>();
+
             points = ((int)UpToPoint.High);
             TeamNameSetter();
             temp.Text = "1001";
-            this.databaseManager = databaseManager;
         }
     }
 }

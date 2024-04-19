@@ -2,13 +2,25 @@
 {
     public partial class App : Application
     {
+        public new static App Current => (App)Application.Current!;
+        public ServiceProvider Services { get; private set; } = null!;
+
         public App()
         {
             InitializeComponent();
-            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "rezultsDb.db3");
-            var databaseManager = new DatabaseManager(dbPath);
-                                  
-            MainPage = new AppShell(databaseManager);
+
+            Services = ConfigureServices();
+
+            MainPage = new AppShell();
+        }
+
+        private static ServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            services.AddSingleton<DatabaseManager>();
+
+            return services.BuildServiceProvider();
         }
     }
 }
