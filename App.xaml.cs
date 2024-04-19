@@ -1,4 +1,6 @@
-﻿namespace OnlyBelaSemafor
+﻿// Ignore Spelling: Semafor
+
+namespace OnlyBelaSemafor
 {
     public partial class App : Application
     {

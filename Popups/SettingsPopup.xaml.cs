@@ -23,6 +23,7 @@ public partial class SettingsPopup : Popup
     {
         // Clear existing content
         settingsDiv.Content = null;
+        settingsDiv.BorderColor = null;
 
         // Create content for setting teams (example: labels and entries)
         var label1 = new Label { Text = "Prvi Tim:", Margin = new Thickness(5) };
@@ -104,5 +105,7 @@ public partial class SettingsPopup : Popup
     {
         // For now, do nothing when the button is clicked
         // You can add functionality to delete the last result here in the future
+        mainPage.DeleteLastResult();
+        this.Close();
     }   
 }

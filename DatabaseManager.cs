@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,12 @@ namespace OnlyBelaSemafor
             database.Delete<ResultModel>(id);
         }
 
+        public int Size()
+        {
+            var temp = GetTeams();
+            return temp.Count();
+        }
+
         public ResultModel GetTeam(int id)
         {
             return database.Get<ResultModel>(id);
@@ -44,7 +51,38 @@ namespace OnlyBelaSemafor
             return database.Table<ResultModel>().ToList();
         }
 
-        //TODO: This does not clear database
+        public ResultModel LastRow()
+        {
+            return database.Table<ResultModel>().OrderByDescending(team => team.Id).FirstOrDefault();
+        }
+
+        public string GetLastTeamName(int id) 
+        { 
+            var lastTeam = LastRow(); 
+            return id == 0 ? lastTeam?.team1Name ?? string.Empty : lastTeam?.team2Name ?? string.Empty; 
+        }
+
+        public List<int> GetLastTotal()
+        {
+            var lastTotal = LastRow();
+            List<int> rez = new List<int>() {
+                lastTotal.team1TotalScore,
+                lastTotal.team2TotalScore
+            };
+            return rez;
+        }
+
+        public int GetLastId()
+        {
+            return LastRow().Id;
+        }
+
+        public void DeleteLastRowById(int id)
+        {
+            database.Delete<ResultModel>(id);
+        }
+
+        //DID_IT: This does not clear database
         public void ClearDb()
         {
             database.Execute("DELETE FROM ResultModel");

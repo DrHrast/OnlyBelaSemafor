@@ -2,6 +2,7 @@
 using OnlyBelaSemafor.Services;
 using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Internals;
 
 namespace OnlyBelaSemafor
 {
@@ -61,6 +62,12 @@ namespace OnlyBelaSemafor
             nameOfTheSecondTeam = string.IsNullOrEmpty(nameTwo) ? nameOfTheSecondTeam : nameTwo;
             TeamNameSetter();
         }
+        public void SaveNames()
+        {
+            nameOfTheFirstTeam = databaseManager.GetLastTeamName(0);
+            nameOfTheSecondTeam = databaseManager.GetLastTeamName(1);
+            SetTeamNames(nameOfTheFirstTeam, nameOfTheSecondTeam);
+        }
         public string GetTeamNames(int id)
         {
             switch(id)
@@ -73,6 +80,26 @@ namespace OnlyBelaSemafor
                     return string.Empty;
             }
         }
+        public void DeleteLastResult()
+        {
+            if(!IsDbEmpty())
+            {
+                databaseManager.DeleteLastRowById(databaseManager.GetLastId());
+                CheckDb();
+                Output();
+            }
+        }
+        private bool IsDbEmpty()
+        {
+            return databaseManager.Size() == 0;
+        }
+        private void CheckDb()
+        {
+            if (!IsDbEmpty())
+            {
+                listOfGameResults.Add(databaseManager.GetLastTotal());
+            }
+        }        
         private void GameScoreSetter()
         {
             //If score is higher than points value start new game with that points ceiling.
@@ -196,7 +223,7 @@ namespace OnlyBelaSemafor
         {
             var lastResults = databaseManager.GetTeams();
 
-            var tableSection = new TableSection("Scores");
+            var tableSection = new TableSection();
 
             foreach (var result in lastResults)
             {
@@ -236,32 +263,7 @@ namespace OnlyBelaSemafor
 
             scoreContent.Root.Clear();
             scoreContent.Root.Add(tableSection);
-        }
-        //private void Output()
-        //{
-        //    var team1 = listOfGameResults[listOfGameResults.Count - 1][0];
-        //    var team2 = listOfGameResults[listOfGameResults.Count - 1][1];
-        //    resultOneOutput = "";
-        //    resultTwoOutput = "";
-        //    foreach (var rez in listOfGameResults)
-        //    {
-        //        resultOneOutput = $"{rez[0]}\n" + resultOneOutput;
-        //        resultTwoOutput = $"{rez[1]}\n" + resultTwoOutput;
-        //    }
-        //    team1Result.Text = resultOneOutput;
-        //    team2Result.Text = resultTwoOutput;
-        //    if (team1 >= points || team2 >= points)
-        //    {
-        //        if (team1 >= points)
-        //        {
-        //            this.ShowPopup(new VictoryPopup(firstTeamName));
-        //        }
-        //        else
-        //        {
-        //            this.ShowPopup(new VictoryPopup(secondTeamName));
-        //        }
-        //    }
-        //}
+        }       
 
         //******************//
         //      EVENTS      //
@@ -340,7 +342,7 @@ namespace OnlyBelaSemafor
                     team2Score = string.IsNullOrEmpty(teamTwoScoreEntry.Text) ? 0 : int.Parse(teamTwoScoreEntry.Text),
                     team1Bela = teamOneBelaCheck.IsChecked == true ? 20 : 0,
                     team2Bela = teamTwoBelaCheck.IsChecked == true ? 20 : 0,
-                    team1Call = string.IsNullOrEmpty(teamOneScoreEntry.Text) ? 0 : int.Parse(teamOneScoreEntry.Text),
+                    team1Call = string.IsNullOrEmpty(teamOneCallEntry.Text) ? 0 : int.Parse(teamOneCallEntry.Text),
                     team2Call = string.IsNullOrEmpty(teamTwoCallEntry.Text) ? 0 : int.Parse(teamTwoCallEntry.Text)
                 };
 
@@ -350,7 +352,10 @@ namespace OnlyBelaSemafor
         }
         private void PlusImageButton_Clicked(object sender, EventArgs e)
         {
+            SaveNames();
             databaseManager.ClearDb();
+            ClearingInputs();
+            listOfGameResults.Clear();
             Output();
         }
 
@@ -377,8 +382,13 @@ namespace OnlyBelaSemafor
             databaseManager = App.Current.Services.GetRequiredService<DatabaseManager>();
 
             points = ((int)UpToPoint.High);
-            TeamNameSetter();
             //temp.Text = "1001";
+            var firstName = databaseManager.GetLastTeamName(0);
+            var secondName = databaseManager.GetLastTeamName(1);
+            nameOfTheFirstTeam = string.IsNullOrEmpty(firstName) ? nameOfTheFirstTeam : firstName;
+            nameOfTheSecondTeam = string.IsNullOrEmpty(secondName) ? nameOfTheSecondTeam : secondName;
+            SetTeamNames(nameOfTheFirstTeam, nameOfTheSecondTeam);
+            CheckDb();
             Output();
         }
 
