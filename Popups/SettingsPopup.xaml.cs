@@ -4,14 +4,16 @@ namespace OnlyBelaSemafor;
 
 public partial class SettingsPopup : Popup
 {
-	public SettingsPopup(MainPage mainPage)
-	{
-		InitializeComponent();
+    public SettingsPopup(MainPage mainPage)
+    {
+        InitializeComponent();
         this.mainPage = mainPage;
-	}
+    }
 
     string teamOneName;
     string teamTwoName;
+    private int value = -1;
+    private bool settingsChanged = false;
     private readonly MainPage mainPage;
     private Dictionary<string, int> settings = new Dictionary<string, int>()
     {
@@ -21,7 +23,8 @@ public partial class SettingsPopup : Popup
 
     private void CloseWindow()
     {
-        foreach(var value in settings.Values)
+        //TODO: 2. Implement database entry
+        foreach (var value in settings.Values)
         {
             if (value != -1)
             {
@@ -32,7 +35,7 @@ public partial class SettingsPopup : Popup
 
     private void CloseButton_Clicked(object sender, EventArgs e)
     {
-		this.Close();
+        CloseWindow();
     }
 
 
@@ -44,9 +47,9 @@ public partial class SettingsPopup : Popup
 
         // Create content for setting teams (example: labels and entries)
         var label1 = new Label { Text = "Prvi Tim:", Margin = new Thickness(5) };
-        var entry1 = new Entry { Placeholder = "Ime prvog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text};
+        var entry1 = new Entry { Placeholder = "Ime prvog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text };
         var label2 = new Label { Text = "Drugi tim:", Margin = new Thickness(5) };
-        var entry2 = new Entry { Placeholder = "Ime drugog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text};
+        var entry2 = new Entry { Placeholder = "Ime drugog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text };
         var nameButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10) };
         nameButton.Clicked += OnNameSaveButtonClicked;
 
@@ -78,7 +81,7 @@ public partial class SettingsPopup : Popup
             }
             mainPage.SetTeamNames(teamOneName, teamTwoName);
             this.Close();
-        }   
+        }
     }
 
     private void SetScoresButton_Clicked(object sender, EventArgs e)
@@ -92,7 +95,7 @@ public partial class SettingsPopup : Popup
         var radioButton3 = new RadioButton { Content = "701" };
         var radioButton4 = new RadioButton { Content = "501" };
         var radioButton5 = new RadioButton { Content = "301" };
-        var scoreButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10)};
+        var scoreButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10) };
         scoreButton.Clicked += ScoreButton_Clicked;
 
         // Create a layout to hold the content
@@ -106,7 +109,7 @@ public partial class SettingsPopup : Popup
 
         // Set the content of the settingsDiv
         settingsDiv.Content = layout;
-    
+
         void ScoreButton_Clicked(object? sender, EventArgs e)
         {
             if (radioButton1.IsChecked) settings.Add("victoryScore", 1301);
@@ -114,13 +117,36 @@ public partial class SettingsPopup : Popup
             else if (radioButton3.IsChecked) settings.Add("victoryScore", 701);
             else if (radioButton4.IsChecked) settings.Add("victoryScore", 501);
             else if (radioButton5.IsChecked) settings.Add("victoryScore", 301);
-            this.Close();
+
+            if (!settings.TryGetValue("victoryScore", out int value))
+            {
+                settingsChanged = true;
+                CloseWindow();
+            }
+
+            CloseWindow();
         }
     }
 
     private void DeleteLastResultButton_Clicked(object sender, EventArgs e)
     {
         mainPage.DeleteLastResult();
-        this.Close();
-    }   
+        CloseWindow();
+    }
+
+    private void isDarkModeSwitch_Toggled(object sender, ToggledEventArgs e)
+    {
+        // Dark mode "tenebris" for ASCII value = 870
+        // Light mode "lux" for ASCII value = 345
+        if (isDarkModeSwitch.IsToggled)
+        {
+            settingsChanged = true;
+            settings.Add("darkLayoutMode", 870);
+        }
+        else
+        {
+            settingsChanged = true;
+            settings.Add("darkLayoutMode", 345);
+        }
+    }
 }

@@ -107,6 +107,7 @@ namespace OnlyBelaSemafor
         }
         private void TeamNameSetter()
         {
+            //TODO: 1. Make a header
             nameOfTeam1.Content = nameOfTheFirstTeam;
             nameOfTeam2.Content = nameOfTheSecondTeam;
             //team1NameRez.Text = nameOfTheFirstTeam;
