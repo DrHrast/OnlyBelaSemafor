@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using OnlyBelaSemafor.Models;
@@ -13,6 +14,8 @@ namespace OnlyBelaSemafor
     {
         string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "rezultsDb.db3");
         readonly SQLiteConnection database;
+        string defaultValueForScoreKey = "1001";
+        string defaultValueForModeKey = "Light";
 
         public DatabaseManager()
         {
@@ -26,8 +29,14 @@ namespace OnlyBelaSemafor
                 // If table is empty, insert the initial row
                 database.Insert(new SettingsModel
                 {
-                    victoryScore = 1001,
-                    darkLayoutMode = false
+                    Key = "scoreValue",
+                    Value = "1001"
+                }); 
+                
+                database.Insert(new SettingsModel
+                {
+                    Key = "modeValue",
+                    Value = "Light"
                 });
             }
         }
@@ -113,19 +122,47 @@ namespace OnlyBelaSemafor
         //     SETTINGS     //
         //******************//
 
-        public void AddSettings(SettingsModel settingsModel)
+        //public void AddSettings(SettingsModel settingsModel)
+        //{
+        //    database.Insert(settingsModel);
+        //}
+        public void UpdateValueByKey(string key, string newValue)
         {
-            database.Insert(settingsModel);
+            var entry = database.Table<SettingsModel>().FirstOrDefault(x => x.Key == key);
+
+            if (entry != null)
+            {
+                entry.Value = newValue;
+                database.Update(entry);
+            }
         }
 
-        public SettingsModel GetLastSetting()
+        public SettingsModel GetModelByKey(string key)
         {
-            return database.Table<SettingsModel>().OrderByDescending(sett => sett.Id).FirstOrDefault();
+            return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key);
         }
 
-        public SettingsModel GetDefaultSetting()
+        //public SettingsModel GetLastSetting()
+        //{
+        //    return database.Table<SettingsModel>().OrderByDescending(sett => sett.Id).FirstOrDefault();
+        //}
+
+        public int GetIntScoreValue()
         {
-            return database.Table<SettingsModel>().FirstOrDefault();
+            string key = "scoreValue";
+            return int.Parse(database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value);
+        }
+
+        public bool IsDarkModeOn()
+        {
+            string key = "modeValue";
+            return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value == "Light" ? false : true; 
+        }
+
+        public void RevertToDefaultSettings()
+        {
+            UpdateValueByKey("scoreValue", defaultValueForScoreKey);
+            UpdateValueByKey("modeValue", defaultValueForModeKey);
         }
     }
 }

@@ -9,9 +9,11 @@ namespace OnlyBelaSemafor.Models
 {
     public class SettingsModel
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-        public int victoryScore { get; set; } 
-        public bool darkLayoutMode { get; set; }
+        //public int Id { get; set; }
+        //public int victoryScore { get; set; } 
+        //public bool darkLayoutMode { get; set; }
+        [PrimaryKey]
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 }

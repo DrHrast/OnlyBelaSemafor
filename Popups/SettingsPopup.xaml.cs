@@ -8,29 +8,31 @@ public partial class SettingsPopup : Popup
     {
         InitializeComponent();
         this.mainPage = mainPage;
+        isDarkModeSwitch.IsToggled = mainPage.GetDbMode();
     }
 
     string teamOneName;
     string teamTwoName;
-    private int value = -1;
-    private bool settingsChanged = false;
+    private string scoreValue;
+    private string modeValue;
+    private string scoreKey = "scoreValue";
+    private string modeKey = "modeValue";
     private readonly MainPage mainPage;
-    private Dictionary<string, int> settings = new Dictionary<string, int>()
-    {
-        { "victoryScore", -1 },
-        { "darkLayoutMode", -1 }
-    };
 
     private void CloseWindow()
     {
         //TODO: 2. Implement database entry
-        foreach (var value in settings.Values)
+        //TODO: 3. Implement control for reverting to default settings
+        //TODO: 4. != null is idiotic and needs to be replaced with a respective value
+        if (scoreValue != null)
         {
-            if (value != -1)
-            {
-
-            }
+            mainPage.GameSettingsSetter(scoreKey, scoreValue);
         }
+        if (modeValue != null)
+        {
+            mainPage.GameSettingsSetter(modeKey, modeValue);
+        }
+        this.Close();
     }
 
     private void CloseButton_Clicked(object sender, EventArgs e)
@@ -112,17 +114,11 @@ public partial class SettingsPopup : Popup
 
         void ScoreButton_Clicked(object? sender, EventArgs e)
         {
-            if (radioButton1.IsChecked) settings.Add("victoryScore", 1301);
-            else if (radioButton2.IsChecked) settings.Add("victoryScore", 1001);
-            else if (radioButton3.IsChecked) settings.Add("victoryScore", 701);
-            else if (radioButton4.IsChecked) settings.Add("victoryScore", 501);
-            else if (radioButton5.IsChecked) settings.Add("victoryScore", 301);
-
-            if (!settings.TryGetValue("victoryScore", out int value))
-            {
-                settingsChanged = true;
-                CloseWindow();
-            }
+            if (radioButton1.IsChecked) scoreValue = "1301";
+            else if (radioButton2.IsChecked) scoreValue = "1001";
+            else if (radioButton3.IsChecked) scoreValue = "701";
+            else if (radioButton4.IsChecked) scoreValue = "501";
+            else if (radioButton5.IsChecked) scoreValue = "301";
 
             CloseWindow();
         }
@@ -140,13 +136,11 @@ public partial class SettingsPopup : Popup
         // Light mode "lux" for ASCII value = 345
         if (isDarkModeSwitch.IsToggled)
         {
-            settingsChanged = true;
-            settings.Add("darkLayoutMode", 870);
+            modeValue = "Dark";
         }
         else
         {
-            settingsChanged = true;
-            settings.Add("darkLayoutMode", 345);
+            modeValue = "Light";
         }
     }
 }

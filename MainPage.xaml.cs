@@ -15,14 +15,14 @@ namespace OnlyBelaSemafor
         private DatabaseManager databaseManager;
 
         //Enum of score steps
-        private enum UpToPoint
+        /*private enum UpToPoint
         {
             Highest = 1301,
             High = 1001,
             Medium = 701,
             Low = 501,
             Lowest = 301
-        }
+        }*/
         List<List<int>> listOfGameResults = new List<List<int>>();
         private const int GAME = 162;
         private int points;
@@ -34,7 +34,9 @@ namespace OnlyBelaSemafor
         //******************//
         //      METHODS     //
         //******************//
-        public void SetGameScore(int key)
+
+        /*public void SetGameScore(int key)
+        //TODO:ERR Probably not needed and also Enum not needed
         {
             switch (key)
             {
@@ -55,7 +57,7 @@ namespace OnlyBelaSemafor
                     break;
             }
             GameScoreSetter();
-        }
+        }*/
         public void SetTeamNames(string nameOne, string nameTwo)
         {
             nameOfTheFirstTeam = string.IsNullOrEmpty(nameOne) ? nameOfTheFirstTeam : nameOne;
@@ -89,6 +91,29 @@ namespace OnlyBelaSemafor
                 Output();
             }
         }
+        public void GameSettingsSetter(string key, string value)
+        {
+            //If score is higher than points value start new game with that points ceiling.
+            //temp.Text = points.ToString();
+            databaseManager.UpdateValueByKey(key, value);
+            points = databaseManager.GetIntScoreValue();
+        }
+        public void NewGame()
+        {
+            SaveNames();
+            databaseManager.ClearDb();
+            ClearingInputs();
+            listOfGameResults.Clear();
+            Output();
+        }
+        public void QuitGame()
+        {
+            App.Current.Quit();
+        }
+        public bool GetDbMode()
+        {
+            return databaseManager.IsDarkModeOn();
+        }
         private bool IsDbEmpty()
         {
             return databaseManager.Size() == 0;
@@ -100,11 +125,6 @@ namespace OnlyBelaSemafor
                 listOfGameResults.Add(databaseManager.GetLastTotal());
             }
         }        
-        private void GameScoreSetter()
-        {
-            //If score is higher than points value start new game with that points ceiling.
-            //temp.Text = points.ToString();
-        }
         private void TeamNameSetter()
         {
             //TODO: 1. Make a header
@@ -141,6 +161,8 @@ namespace OnlyBelaSemafor
         }
         private void ResultOutput(ResultModel result)
         {
+
+            //TODO: 5 Figue out where is lost score for team two when it's higher than 50
             ResultService resultService = new ResultService();
             var temp = new List<List<int>>();
             temp.Add(resultService.SumResults(result));
@@ -202,6 +224,7 @@ namespace OnlyBelaSemafor
             {
                 if (listOfGameResults.Count == 0)
                 {
+
                     listOfGameResults.Add(temp[0]);
                 }
                 else
@@ -275,6 +298,21 @@ namespace OnlyBelaSemafor
             scoreContent.Root.Clear();
             scoreContent.Root.Add(tableSection);
         }       
+        private void CheckVictoryConditions()
+        {
+            List<int> totalScores = new List<int>(databaseManager.GetLastTotal());
+            if (totalScores[0] >= points)
+            {
+                //Team one won
+                this.ShowPopup(new VictoryPopup(this, nameOfTheFirstTeam));
+            }
+            else if (totalScores[1] >= points)
+            {
+                //Team two won
+                this.ShowPopup(new VictoryPopup(this, nameOfTheSecondTeam));
+            }
+            else { return; }
+        }
 
         //******************//
         //      EVENTS      //
@@ -358,16 +396,14 @@ namespace OnlyBelaSemafor
                 };
 
                 ResultOutput(result);
+                CheckVictoryConditions();
                 ClearingInputs();
             }
         }
+        //TODO: 6 Sometimes on pressing new game button it doesn't save previous team names, nor it sets them on default
         private void PlusImageButton_Clicked(object sender, EventArgs e)
         {
-            SaveNames();
-            databaseManager.ClearDb();
-            ClearingInputs();
-            listOfGameResults.Clear();
-            Output();
+            NewGame();   
         }
 
         //******************//
@@ -392,10 +428,10 @@ namespace OnlyBelaSemafor
 
             databaseManager = App.Current.Services.GetRequiredService<DatabaseManager>();
 
-            points = ((int)UpToPoint.High);
             //temp.Text = "1001";
             var firstName = databaseManager.GetLastTeamName(0);
             var secondName = databaseManager.GetLastTeamName(1);
+            points = databaseManager.GetIntScoreValue();
             nameOfTheFirstTeam = string.IsNullOrEmpty(firstName) ? nameOfTheFirstTeam : firstName;
             nameOfTheSecondTeam = string.IsNullOrEmpty(secondName) ? nameOfTheSecondTeam : secondName;
             SetTeamNames(nameOfTheFirstTeam, nameOfTheSecondTeam);
