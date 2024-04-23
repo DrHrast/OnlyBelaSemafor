@@ -32,6 +32,7 @@ public partial class SettingsPopup : Popup
         {
             mainPage.GameSettingsSetter(modeKey, modeValue);
         }
+
         this.Close();
     }
 

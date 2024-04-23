@@ -162,7 +162,8 @@ namespace OnlyBelaSemafor
         private void ResultOutput(ResultModel result)
         {
 
-            //TODO: 5 Figue out where is lost score for team two when it's higher than 50
+            //TODO: 5 Figue out where the score is lost for team two when it's 162 and 0 for team one
+            //TODO: 5.1 Team that called doesn't work in favor of team two
             ResultService resultService = new ResultService();
             var temp = new List<List<int>>();
             temp.Add(resultService.SumResults(result));
@@ -272,17 +273,19 @@ namespace OnlyBelaSemafor
                 //var headerCell = new ViewCell { View = headerGrid };
                 //tableSection.Add(headerCell);
 
-                var team1Label = new Label 
+                var team1Label = new Label
                 {
                     Text = result.team1TotalScore.ToString(),
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center,
+                    FontSize = 20
                 };
                 var team2Label = new Label 
                 { 
                     Text = result.team2TotalScore.ToString(), 
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
+                    HorizontalOptions = LayoutOptions.Center,
+                    FontSize = 20
                 };
 
                 grid.Children.Add(team1Label);
