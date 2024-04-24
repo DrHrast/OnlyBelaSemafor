@@ -406,7 +406,10 @@ namespace OnlyBelaSemafor
         //TODO: 6 Sometimes on pressing new game button it doesn't save previous team names, nor it sets them on default
         private void PlusImageButton_Clicked(object sender, EventArgs e)
         {
-            NewGame();   
+            NewGame();
+
+            // todo: implemenet ResetGame method to GameModel
+            // game.ResetGame();
         }
 
         //******************//
@@ -430,17 +433,33 @@ namespace OnlyBelaSemafor
             InitializeComponent();
 
             databaseManager = App.Current.Services.GetRequiredService<DatabaseManager>();
+            game = App.Current.Services.GetRequiredService<GameModel>();
+            game.PropertyChanged += Game_PropertyChanged;
 
-            //temp.Text = "1001";
-            var firstName = databaseManager.GetLastTeamName(0);
-            var secondName = databaseManager.GetLastTeamName(1);
-            points = databaseManager.GetIntScoreValue();
-            nameOfTheFirstTeam = string.IsNullOrEmpty(firstName) ? nameOfTheFirstTeam : firstName;
-            nameOfTheSecondTeam = string.IsNullOrEmpty(secondName) ? nameOfTheSecondTeam : secondName;
-            SetTeamNames(nameOfTheFirstTeam, nameOfTheSecondTeam);
-            CheckDb();
-            Output();
+            ////temp.Text = "1001";
+            //var firstName = databaseManager.GetLastTeamName(0);
+            //var secondName = databaseManager.GetLastTeamName(1);
+            //points = databaseManager.GetIntScoreValue();
+            //nameOfTheFirstTeam = string.IsNullOrEmpty(firstName) ? nameOfTheFirstTeam : firstName;
+            //nameOfTheSecondTeam = string.IsNullOrEmpty(secondName) ? nameOfTheSecondTeam : secondName;
+            //SetTeamNames(nameOfTheFirstTeam, nameOfTheSecondTeam);
+            //CheckDb();
+            //Output();
+
+            LoadGameData();
         }
 
+        private readonly GameModel game;
+
+        private void Game_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            LoadGameData();
+        }
+        private void LoadGameData()
+        {
+            nameOfTeam1.Content = game.TeamOneName;
+            nameOfTeam2.Content = game.TeamTwoName;
+            points = game.ScoreTarget;
+        }
     }
 }

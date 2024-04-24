@@ -1,5 +1,7 @@
 ﻿// Ignore Spelling: Semafor
 
+using OnlyBelaSemafor.Models;
+
 namespace OnlyBelaSemafor
 {
     public partial class App : Application
@@ -21,6 +23,8 @@ namespace OnlyBelaSemafor
             var services = new ServiceCollection();
 
             services.AddSingleton<DatabaseManager>();
+            services.AddSingleton<GameModel>();
+            services.AddSingleton<AppSettings>();
 
             return services.BuildServiceProvider();
         }

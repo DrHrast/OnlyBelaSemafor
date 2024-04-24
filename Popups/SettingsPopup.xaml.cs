@@ -1,37 +1,59 @@
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core.Views;
 using CommunityToolkit.Maui.Views;
+using OnlyBelaSemafor.Models;
 
 namespace OnlyBelaSemafor;
 
 public partial class SettingsPopup : Popup
 {
+    private readonly GameModel _game;
+    private readonly AppSettings _appSettings;
+    private readonly DatabaseManager _databaseManager;
+
     public SettingsPopup(MainPage mainPage)
     {
         InitializeComponent();
-        this.mainPage = mainPage;
-        isDarkModeSwitch.IsToggled = mainPage.GetDbMode();
+
+        _game = App.Current.Services.GetRequiredService<GameModel>();
+        _appSettings = App.Current.Services.GetRequiredService<AppSettings>();
+
+        cv_ScoreSettings.ItemsSource = ScoreDisplay;
+
+        LoadData();
     }
 
-    string teamOneName;
-    string teamTwoName;
-    private string scoreValue;
-    private string modeValue;
-    private string scoreKey = "scoreValue";
-    private string modeKey = "modeValue";
-    private readonly MainPage mainPage;
+    private void LoadData()
+    {
+        entry_Team1.Text = _game.TeamOneName;
+        entry_Team2.Text = _game.TeamTwoName;
+
+        var tempScoreTarget = ScoreDisplay.Where(s => s.Score == _game.ScoreTarget).FirstOrDefault();
+
+        if(tempScoreTarget is not null)
+        {
+            tempScoreTarget.IsSelected = true;
+        }
+
+        switch_Theme.IsToggled = _appSettings.Theme == "Dark";
+    }
 
     private void CloseWindow()
     {
         //TODO: 2. Implement database entry
         //TODO: 3. Implement control for reverting to default settings
         //TODO: 4. != null is idiotic and needs to be replaced with a respective value
-        if (scoreValue != null)
-        {
-            mainPage.GameSettingsSetter(scoreKey, scoreValue);
-        }
-        if (modeValue != null)
-        {
-            mainPage.GameSettingsSetter(modeKey, modeValue);
-        }
+        //if (scoreValue != null)
+        //{
+        //    mainPage.GameSettingsSetter(scoreKey, scoreValue);
+        //}
+        //if (modeValue != null)
+        //{
+        //    mainPage.GameSettingsSetter(modeKey, modeValue);
+        //}
+
+        // todo: Create GameModel table and save game settings to database
+        // todo: create AppSettings table and save app settings to database
 
         this.Close();
     }
@@ -41,107 +63,59 @@ public partial class SettingsPopup : Popup
         CloseWindow();
     }
 
-
+    // Team settings
     private void SetTeamsButton_Clicked(object sender, EventArgs e)
     {
-        // Clear existing content
-        settingsDiv.Content = null;
-        settingsDiv.BorderColor = null;
-
-        // Create content for setting teams (example: labels and entries)
-        var label1 = new Label { Text = "Prvi Tim:", Margin = new Thickness(5) };
-        var entry1 = new Entry { Placeholder = "Ime prvog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text };
-        var label2 = new Label { Text = "Drugi tim:", Margin = new Thickness(5) };
-        var entry2 = new Entry { Placeholder = "Ime drugog tima", Margin = new Thickness(5), Keyboard = Keyboard.Text };
-        var nameButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10) };
-        nameButton.Clicked += OnNameSaveButtonClicked;
-
-        // Create a layout to hold the content
-        var layout = new StackLayout();
-        layout.Children.Add(label1);
-        layout.Children.Add(entry1);
-        layout.Children.Add(label2);
-        layout.Children.Add(entry2);
-        layout.Children.Add(nameButton);
-
-        // Set the content of the settingsDiv
-        settingsDiv.Content = layout;
-
-        void OnNameSaveButtonClicked(object? sender, EventArgs e)
+        frame_ScoresSettings.IsVisible = false;
+        frame_TeamSettings.IsVisible = true;
+    }
+    private void CloseTeamSettingsButton_Clicked(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(entry_Team1.Text) || string.IsNullOrEmpty(entry_Team2.Text))
         {
-            if (!string.IsNullOrEmpty(entry1.Text) && !string.IsNullOrEmpty(entry2.Text))
-            {
-                teamOneName = entry1.Text;
-                teamTwoName = entry2.Text;
-            }
-            else if (!string.IsNullOrEmpty(entry1.Text))
-            {
-                teamOneName = entry1.Text;
-            }
-            else if (!string.IsNullOrEmpty(entry2.Text))
-            {
-                teamTwoName = entry2.Text;
-            }
-            mainPage.SetTeamNames(teamOneName, teamTwoName);
-            this.Close();
+            // todo: Show error message
+            return;
         }
+
+        _game.TeamOneName = entry_Team1.Text;
+        _game.TeamTwoName = entry_Team2.Text;
     }
 
+    //  Score settings 
+    public class ScoreDisplayModel
+    {
+        public int Score { get; set; }
+        public bool IsSelected { get; set; }
+    }
+    public List<ScoreDisplayModel> ScoreDisplay { get; set; } = new List<ScoreDisplayModel>
+    {
+        new ScoreDisplayModel { Score = 1301, IsSelected = false },
+        new ScoreDisplayModel { Score = 1001, IsSelected = false },
+        new ScoreDisplayModel { Score = 701, IsSelected = false },
+        new ScoreDisplayModel { Score = 501, IsSelected = false },
+        new ScoreDisplayModel { Score = 301, IsSelected = false }
+    };
     private void SetScoresButton_Clicked(object sender, EventArgs e)
     {
-        // Clear existing content
-        settingsDiv.Content = null;
-
-        // Create content for setting scores (example: radio buttons)
-        var radioButton1 = new RadioButton { Content = "1301" };
-        var radioButton2 = new RadioButton { Content = "1001" };
-        var radioButton3 = new RadioButton { Content = "701" };
-        var radioButton4 = new RadioButton { Content = "501" };
-        var radioButton5 = new RadioButton { Content = "301" };
-        var scoreButton = new Button { Text = "Spremi promjene", Margin = new Thickness(10) };
-        scoreButton.Clicked += ScoreButton_Clicked;
-
-        // Create a layout to hold the content
-        var layout = new StackLayout();
-        layout.Children.Add(radioButton1);
-        layout.Children.Add(radioButton2);
-        layout.Children.Add(radioButton3);
-        layout.Children.Add(radioButton4);
-        layout.Children.Add(radioButton5);
-        layout.Children.Add(scoreButton);
-
-        // Set the content of the settingsDiv
-        settingsDiv.Content = layout;
-
-        void ScoreButton_Clicked(object? sender, EventArgs e)
-        {
-            if (radioButton1.IsChecked) scoreValue = "1301";
-            else if (radioButton2.IsChecked) scoreValue = "1001";
-            else if (radioButton3.IsChecked) scoreValue = "701";
-            else if (radioButton4.IsChecked) scoreValue = "501";
-            else if (radioButton5.IsChecked) scoreValue = "301";
-
-            CloseWindow();
-        }
+        frame_TeamSettings.IsVisible = false;
+        frame_ScoresSettings.IsVisible = true;
+    }
+    private void CloseScoresSettingsButton_Clicked(object sender, EventArgs e)
+    {
+        _game.ScoreTarget = (ScoreDisplay.FirstOrDefault(s => s.IsSelected)).Score;
+        frame_ScoresSettings.IsVisible = false;
     }
 
     private void DeleteLastResultButton_Clicked(object sender, EventArgs e)
     {
-        mainPage.DeleteLastResult();
+        //mainPage.DeleteLastResult();
+        // todo: delete from database
+        // on main page implement a method that will delete the last result
         CloseWindow();
     }
 
-    private void isDarkModeSwitch_Toggled(object sender, ToggledEventArgs e)
+    private void DarkModeSwitch_Toggled(object sender, ToggledEventArgs e)
     {
-        // Dark mode "tenebris" for ASCII value = 870
-        // Light mode "lux" for ASCII value = 345
-        if (isDarkModeSwitch.IsToggled)
-        {
-            modeValue = "Dark";
-        }
-        else
-        {
-            modeValue = "Light";
-        }
+        _appSettings.Theme = e.Value ? "Dark" : "Light";
     }
 }

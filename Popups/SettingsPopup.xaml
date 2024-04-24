@@ -49,7 +49,7 @@
                                Source="sun_switch_sized.png" 
                                Scale="0.3" Margin="2" 
                                HorizontalOptions="End"/>
-                        <Switch Grid.Column="2" IsToggled="False" Margin="0" x:Name="isDarkModeSwitch" Toggled="isDarkModeSwitch_Toggled"/>
+                        <Switch Grid.Column="2" IsToggled="False" Margin="0" x:Name="switch_Theme" Toggled="DarkModeSwitch_Toggled"/>
                         <Image Grid.Column="3" 
                                Source="moon_switch_sized.png" 
                                Scale="0.25"                              
@@ -59,7 +59,33 @@
                     <Button Grid.Row="1" Margin="12" Text="Postavi timove" Clicked="SetTeamsButton_Clicked"/>
                     <Button Grid.Row="2" Margin="12" Text="Postavi bodove" Clicked="SetScoresButton_Clicked"/>
                     <Button Grid.Row="3" Margin="12" Text="Obriši zadnji rezultat" Clicked="DeleteLastResultButton_Clicked"/>
-                    <Frame Grid.Row="4" x:Name="settingsDiv" BackgroundColor="LightGray" BorderColor="LightGray" Margin="5"/>
+                    
+                    <!-- Score  settings -->
+                    <Frame x:Name="frame_ScoresSettings" IsVisible="False" Grid.Row="4" BackgroundColor="LightGray" BorderColor="LightGray" Margin="5">
+                      <StackLayout>
+                        <Label Text="Postavi bodove:" HorizontalOptions="Center" VerticalOptions="Start" Margin="10, 0"/>
+                        <CollectionView x:Name="cv_ScoreSettings">
+                          <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                              <RadioButton Content="{Binding Score}" IsChecked="{Binding IsSelected}" />
+                            </DataTemplate>
+                          </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Button Text="Spremi promjene" Clicked="CloseScoresSettingsButton_Clicked"/>
+                      </StackLayout>
+                      </Frame>
+                  
+                    <!-- Team  settings -->
+                    <Frame x:Name="frame_TeamSettings" IsVisible="False" Grid.Row="4" BackgroundColor="LightGray" BorderColor="LightGray" Margin="5">
+                      <StackLayout>
+                        <Label Text="Prvi tim:" Margin="5"/>
+                        <Entry x:Name="entry_Team1" Placeholder="Ime prvog tima" Margin="5" Keyboard="Text" />
+                        <Label Text="Drugi tim:" Margin="5"/>
+                        <Entry x:Name="entry_Team2" Placeholder="Ime drugog tima" Margin="5" Keyboard="Text" />
+                        <Button Text="Spremi promjene" Clicked="CloseTeamSettingsButton_Clicked"/>
+                      </StackLayout>
+                    </Frame>
+                  
                 </Grid>
             </ScrollView>
         </Frame>
