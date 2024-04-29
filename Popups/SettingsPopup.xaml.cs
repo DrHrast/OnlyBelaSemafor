@@ -25,8 +25,8 @@ public partial class SettingsPopup : Popup
 
     private void LoadData()
     {
-        entry_Team1.Text = _game.TeamOneName;
-        entry_Team2.Text = _game.TeamTwoName;
+        entry_Team1.Placeholder = _game.TeamOneName;
+        entry_Team2.Placeholder = _game.TeamTwoName;
 
         var tempScoreTarget = ScoreDisplay.Where(s => s.Score == _game.ScoreTarget).FirstOrDefault();
 

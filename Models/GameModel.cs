@@ -25,7 +25,9 @@ namespace OnlyBelaSemafor.Models
                 _teamTwoName = value;
                 OnPropertyChanged(nameof(TeamTwoName));
             }
-        }        public int ScoreTarget
+        }        
+        
+        public int ScoreTarget
         {
             get => _scoreTarget;
             set

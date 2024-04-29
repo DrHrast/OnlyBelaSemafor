@@ -23,6 +23,7 @@ namespace OnlyBelaSemafor
             Low = 501,
             Lowest = 301
         }*/
+        private readonly GameModel game;
         List<List<int>> listOfGameResults = new List<List<int>>();
         private const int GAME = 162;
         private int points;
@@ -58,7 +59,7 @@ namespace OnlyBelaSemafor
             }
             GameScoreSetter();
         }*/
-        public void SetTeamNames(string nameOne, string nameTwo)
+        /*public void SetTeamNames(string nameOne, string nameTwo)
         {
             nameOfTheFirstTeam = string.IsNullOrEmpty(nameOne) ? nameOfTheFirstTeam : nameOne;
             nameOfTheSecondTeam = string.IsNullOrEmpty(nameTwo) ? nameOfTheSecondTeam : nameTwo;
@@ -81,7 +82,22 @@ namespace OnlyBelaSemafor
                 default:
                     return string.Empty;
             }
-        }
+        }*/
+        /*public void GameSettingsSetter(string key, string value)
+        {
+            //If score is higher than points value start new game with that points ceiling.
+            //temp.Text = points.ToString();
+            databaseManager.UpdateValueByKey(key, value);
+            points = databaseManager.GetIntScoreValue();
+        }*/
+        /*private void TeamNameSetter()
+        {
+            //TODO: 1. Make a header
+            nameOfTeam1.Content = nameOfTheFirstTeam;
+            nameOfTeam2.Content = nameOfTheSecondTeam;
+            //team1NameRez.Text = nameOfTheFirstTeam;
+            //team2NameRez.Text = nameOfTheSecondTeam;
+        }*/
         public void DeleteLastResult()
         {
             if(!IsDbEmpty())
@@ -91,16 +107,9 @@ namespace OnlyBelaSemafor
                 Output();
             }
         }
-        public void GameSettingsSetter(string key, string value)
-        {
-            //If score is higher than points value start new game with that points ceiling.
-            //temp.Text = points.ToString();
-            databaseManager.UpdateValueByKey(key, value);
-            points = databaseManager.GetIntScoreValue();
-        }
         public void NewGame()
         {
-            SaveNames();
+            LoadGameData();
             databaseManager.ClearDb();
             ClearingInputs();
             listOfGameResults.Clear();
@@ -109,10 +118,6 @@ namespace OnlyBelaSemafor
         public void QuitGame()
         {
             App.Current.Quit();
-        }
-        public bool GetDbMode()
-        {
-            return databaseManager.IsDarkModeOn();
         }
         private bool IsDbEmpty()
         {
@@ -125,13 +130,11 @@ namespace OnlyBelaSemafor
                 listOfGameResults.Add(databaseManager.GetLastTotal());
             }
         }        
-        private void TeamNameSetter()
+        private void LoadGameData()
         {
-            //TODO: 1. Make a header
-            nameOfTeam1.Content = nameOfTheFirstTeam;
-            nameOfTeam2.Content = nameOfTheSecondTeam;
-            //team1NameRez.Text = nameOfTheFirstTeam;
-            //team2NameRez.Text = nameOfTheSecondTeam;
+            nameOfTeam1.Content = game.TeamOneName;
+            nameOfTeam2.Content = game.TeamTwoName;
+            points = game.ScoreTarget;
         }
         private void ClearEntryAndShowPlaceholder(Entry entry, string placeholder)
         {
@@ -307,12 +310,12 @@ namespace OnlyBelaSemafor
             if (totalScores[0] >= points)
             {
                 //Team one won
-                this.ShowPopup(new VictoryPopup(this, nameOfTheFirstTeam));
+                this.ShowPopup(new VictoryPopup(this, game.TeamOneName));
             }
             else if (totalScores[1] >= points)
             {
                 //Team two won
-                this.ShowPopup(new VictoryPopup(this, nameOfTheSecondTeam));
+                this.ShowPopup(new VictoryPopup(this, game.TeamTwoName));
             }
             else { return; }
         }
@@ -411,6 +414,10 @@ namespace OnlyBelaSemafor
             // todo: implemenet ResetGame method to GameModel
             // game.ResetGame();
         }
+        private void Game_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            LoadGameData();
+        }
 
         //******************//
         //    NAVIGATION    //
@@ -447,19 +454,6 @@ namespace OnlyBelaSemafor
             //Output();
 
             LoadGameData();
-        }
-
-        private readonly GameModel game;
-
-        private void Game_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            LoadGameData();
-        }
-        private void LoadGameData()
-        {
-            nameOfTeam1.Content = game.TeamOneName;
-            nameOfTeam2.Content = game.TeamTwoName;
-            points = game.ScoreTarget;
         }
     }
 }
