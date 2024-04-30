@@ -42,18 +42,17 @@ public partial class SettingsPopup : Popup
     {
         //TODO: 2. Implement database entry
         //TODO: 3. Implement control for reverting to default settings
-        //TODO: 4. != null is idiotic and needs to be replaced with a respective value
-        //if (scoreValue != null)
-        //{
-        //    mainPage.GameSettingsSetter(scoreKey, scoreValue);
-        //}
-        //if (modeValue != null)
-        //{
-        //    mainPage.GameSettingsSetter(modeKey, modeValue);
-        //}
 
         // todo: Create GameModel table and save game settings to database
         // todo: create AppSettings table and save app settings to database
+
+        //if (_databaseManager.Size() > 0 || _databaseManager != null)
+        //{
+        //    _databaseManager.SetLastTeamName(0);
+        //    _databaseManager.SetLastTeamName(1);
+        //    _databaseManager.UpdateValueByKey("modeValue", _appSettings.Theme);
+        //    _databaseManager.UpdateValueByKey("scoreValue", _game.ScoreTarget.ToString());
+        //}
 
         this.Close();
     }

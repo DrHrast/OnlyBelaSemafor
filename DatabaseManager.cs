@@ -14,6 +14,7 @@ namespace OnlyBelaSemafor
     {
         string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "rezultsDb.db3");
         readonly SQLiteConnection database;
+        readonly GameModel _game;
         string defaultValueForScoreKey = "1001";
         string defaultValueForModeKey = "Light";
 
@@ -66,6 +67,11 @@ namespace OnlyBelaSemafor
             return temp.Count();
         }
 
+        public bool IsEmpty()
+        {
+            return database.Table<ResultModel>().Count() == 0;
+        }
+
         public ResultModel GetTeam(int id)
         {
             return database.Get<ResultModel>(id);
@@ -92,6 +98,19 @@ namespace OnlyBelaSemafor
             return id == 0 ? lastTeam?.team1Name ?? string.Empty : lastTeam?.team2Name ?? string.Empty; 
         }
 
+        public void SetLastTeamName(int id)
+        {
+            var lastTeam = LastRow();
+            if (id == 0)
+            {
+                lastTeam.team1Name = _game.TeamOneName.ToString();
+            }
+            else if (id == 1)
+            {
+                lastTeam.team2Name = _game.TeamTwoName.ToString();
+            }
+        }
+
         public List<int> GetLastTotal()
         {
             var lastTotal = LastRow();
@@ -115,7 +134,8 @@ namespace OnlyBelaSemafor
         //DID_IT: This does not clear database
         public void ClearDb()
         {
-            database.Execute("DELETE FROM ResultModel");
+            database.DropTable<ResultModel>();
+            database.CreateTable<ResultModel>();
         }
 
         //******************//

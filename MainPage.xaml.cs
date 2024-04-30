@@ -110,6 +110,7 @@ namespace OnlyBelaSemafor
         public void NewGame()
         {
             LoadGameData();
+            SetNameVariables();
             databaseManager.ClearDb();
             ClearingInputs();
             listOfGameResults.Clear();
@@ -118,6 +119,11 @@ namespace OnlyBelaSemafor
         public void QuitGame()
         {
             App.Current.Quit();
+        }
+        private void SetNameVariables()
+        {
+            nameOfTheFirstTeam = game.TeamOneName;
+            nameOfTheSecondTeam = game.TeamTwoName;
         }
         private bool IsDbEmpty()
         {
@@ -132,9 +138,21 @@ namespace OnlyBelaSemafor
         }        
         private void LoadGameData()
         {
-            nameOfTeam1.Content = game.TeamOneName;
-            nameOfTeam2.Content = game.TeamTwoName;
-            points = game.ScoreTarget;
+
+            if(databaseManager.IsEmpty())
+            {
+                nameOfTeam1.Content = game.TeamOneName;
+                nameOfTeam2.Content = game.TeamTwoName;
+                points = databaseManager.GetIntScoreValue();                
+            }
+            else
+            {
+                game.TeamOneName = databaseManager.GetLastTeamName(0);
+                game.TeamTwoName = databaseManager.GetLastTeamName(1);
+                points = databaseManager.GetIntScoreValue();
+                nameOfTeam1.Content = game.TeamOneName;
+                nameOfTeam2.Content = game.TeamTwoName;
+            }
         }
         private void ClearEntryAndShowPlaceholder(Entry entry, string placeholder)
         {
@@ -303,6 +321,7 @@ namespace OnlyBelaSemafor
 
             scoreContent.Root.Clear();
             scoreContent.Root.Add(tableSection);
+            //LoadGameData();
         }       
         private void CheckVictoryConditions()
         {
@@ -310,12 +329,12 @@ namespace OnlyBelaSemafor
             if (totalScores[0] >= points)
             {
                 //Team one won
-                this.ShowPopup(new VictoryPopup(this, game.TeamOneName));
+                this.ShowPopup(new VictoryPopup(this, databaseManager.GetLastTeamName(0)));
             }
             else if (totalScores[1] >= points)
             {
                 //Team two won
-                this.ShowPopup(new VictoryPopup(this, game.TeamTwoName));
+                this.ShowPopup(new VictoryPopup(this, databaseManager.GetLastTeamName(1)));
             }
             else { return; }
         }
@@ -391,8 +410,8 @@ namespace OnlyBelaSemafor
             {
                 ResultModel result = new ResultModel()
                 {
-                    team1Name = nameOfTheFirstTeam,
-                    team2Name = nameOfTheSecondTeam,
+                    team1Name = game.TeamOneName,
+                    team2Name = game.TeamTwoName,
                     team1Score = string.IsNullOrEmpty(teamOneScoreEntry.Text) ? 0 : int.Parse(teamOneScoreEntry.Text),
                     team2Score = string.IsNullOrEmpty(teamTwoScoreEntry.Text) ? 0 : int.Parse(teamTwoScoreEntry.Text),
                     team1Bela = teamOneBelaCheck.IsChecked == true ? 20 : 0,
@@ -450,10 +469,10 @@ namespace OnlyBelaSemafor
             //nameOfTheFirstTeam = string.IsNullOrEmpty(firstName) ? nameOfTheFirstTeam : firstName;
             //nameOfTheSecondTeam = string.IsNullOrEmpty(secondName) ? nameOfTheSecondTeam : secondName;
             //SetTeamNames(nameOfTheFirstTeam, nameOfTheSecondTeam);
-            //CheckDb();
-            //Output();
-
             LoadGameData();
+            CheckDb();
+            Output();
+
         }
     }
 }
