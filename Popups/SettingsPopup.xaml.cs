@@ -11,7 +11,7 @@ public partial class SettingsPopup : Popup
     private readonly AppSettings _appSettings;
     private readonly DatabaseManager _databaseManager;
 
-    public SettingsPopup(MainPage mainPage)
+    public SettingsPopup()
     {
         InitializeComponent();
 
@@ -53,6 +53,7 @@ public partial class SettingsPopup : Popup
         //    _databaseManager.UpdateValueByKey("modeValue", _appSettings.Theme);
         //    _databaseManager.UpdateValueByKey("scoreValue", _game.ScoreTarget.ToString());
         //}
+        _databaseManager.UpdateValueByKey("scoreValue", _game.ScoreTarget.ToString());
 
         this.Close();
     }

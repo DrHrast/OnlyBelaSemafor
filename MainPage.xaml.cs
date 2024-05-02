@@ -13,16 +13,6 @@ namespace OnlyBelaSemafor
         //     VARIABLES    //
         //******************//
         private DatabaseManager databaseManager;
-
-        //Enum of score steps
-        /*private enum UpToPoint
-        {
-            Highest = 1301,
-            High = 1001,
-            Medium = 701,
-            Low = 501,
-            Lowest = 301
-        }*/
         private readonly GameModel game;
         List<List<int>> listOfGameResults = new List<List<int>>();
         private const int GAME = 162;
@@ -36,68 +26,6 @@ namespace OnlyBelaSemafor
         //      METHODS     //
         //******************//
 
-        /*public void SetGameScore(int key)
-        //TODO:ERR Probably not needed and also Enum not needed
-        {
-            switch (key)
-            {
-                case 0:
-                    points = ((int)UpToPoint.Highest);
-                    break;
-                case 1:
-                    points = ((int)UpToPoint.High);
-                    break;
-                case 2:
-                    points = ((int)UpToPoint.Medium);
-                    break;
-                case 3:
-                    points = ((int)UpToPoint.Low);
-                    break;
-                case 4:
-                    points = ((int)UpToPoint.Lowest);
-                    break;
-            }
-            GameScoreSetter();
-        }*/
-        /*public void SetTeamNames(string nameOne, string nameTwo)
-        {
-            nameOfTheFirstTeam = string.IsNullOrEmpty(nameOne) ? nameOfTheFirstTeam : nameOne;
-            nameOfTheSecondTeam = string.IsNullOrEmpty(nameTwo) ? nameOfTheSecondTeam : nameTwo;
-            TeamNameSetter();
-        }
-        public void SaveNames()
-        {
-            nameOfTheFirstTeam = databaseManager.GetLastTeamName(0);
-            nameOfTheSecondTeam = databaseManager.GetLastTeamName(1);
-            SetTeamNames(nameOfTheFirstTeam, nameOfTheSecondTeam);
-        }
-        public string GetTeamNames(int id)
-        {
-            switch(id)
-            {
-                case 0:
-                    return nameOfTheFirstTeam;
-                case 1:
-                    return nameOfTheSecondTeam;
-                default:
-                    return string.Empty;
-            }
-        }*/
-        /*public void GameSettingsSetter(string key, string value)
-        {
-            //If score is higher than points value start new game with that points ceiling.
-            //temp.Text = points.ToString();
-            databaseManager.UpdateValueByKey(key, value);
-            points = databaseManager.GetIntScoreValue();
-        }*/
-        /*private void TeamNameSetter()
-        {
-            //TODO: 1. Make a header
-            nameOfTeam1.Content = nameOfTheFirstTeam;
-            nameOfTeam2.Content = nameOfTheSecondTeam;
-            //team1NameRez.Text = nameOfTheFirstTeam;
-            //team2NameRez.Text = nameOfTheSecondTeam;
-        }*/
         public void DeleteLastResult()
         {
             if(!IsDbEmpty())
@@ -134,25 +62,16 @@ namespace OnlyBelaSemafor
             if (!IsDbEmpty())
             {
                 listOfGameResults.Add(databaseManager.GetLastTotal());
+                game.TeamOneName = databaseManager.GetLastTeamName(0);
+                game.TeamTwoName = databaseManager.GetLastTeamName(1);
+                points = databaseManager.GetIntScoreValue();
             }
         }        
         private void LoadGameData()
         {
-
-            if(databaseManager.IsEmpty())
-            {
-                nameOfTeam1.Content = game.TeamOneName;
-                nameOfTeam2.Content = game.TeamTwoName;
-                points = databaseManager.GetIntScoreValue();                
-            }
-            else
-            {
-                game.TeamOneName = databaseManager.GetLastTeamName(0);
-                game.TeamTwoName = databaseManager.GetLastTeamName(1);
-                points = databaseManager.GetIntScoreValue();
-                nameOfTeam1.Content = game.TeamOneName;
-                nameOfTeam2.Content = game.TeamTwoName;
-            }
+            nameOfTeam1.Content = game.TeamOneName;
+            nameOfTeam2.Content = game.TeamTwoName;
+            points = databaseManager.GetIntScoreValue();
         }
         private void ClearEntryAndShowPlaceholder(Entry entry, string placeholder)
         {
@@ -447,7 +366,7 @@ namespace OnlyBelaSemafor
         }
         private void GearImageButton_Clicked(object sender, EventArgs e)
         {
-            this.ShowPopup(new SettingsPopup(this));
+            this.ShowPopup(new SettingsPopup());
         }
 
         //******************//
