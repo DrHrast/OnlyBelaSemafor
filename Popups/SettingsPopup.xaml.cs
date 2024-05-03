@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core.Views;
 using CommunityToolkit.Maui.Views;
 using OnlyBelaSemafor.Models;
+using System.ComponentModel;
 
 namespace OnlyBelaSemafor;
 
@@ -10,6 +11,7 @@ public partial class SettingsPopup : Popup
     private readonly GameModel _game;
     private readonly AppSettings _appSettings;
     private readonly DatabaseManager _databaseManager;
+    private bool isPropertyChanged = false;
 
     public SettingsPopup()
     {
@@ -17,7 +19,7 @@ public partial class SettingsPopup : Popup
 
         _game = App.Current.Services.GetRequiredService<GameModel>();
         _appSettings = App.Current.Services.GetRequiredService<AppSettings>();
-
+        _databaseManager = App.Current.Services.GetRequiredService<DatabaseManager>();
         cv_ScoreSettings.ItemsSource = ScoreDisplay;
 
         LoadData();
@@ -42,19 +44,15 @@ public partial class SettingsPopup : Popup
     {
         //TODO: 2. Implement database entry
         //TODO: 3. Implement control for reverting to default settings
+        // DID_IT: 7. Create GameModel table and save game settings to database
+        // DID_IT: 8. create AppSettings table and save app settings to database
+        if (isPropertyChanged == true)
+        {
+            _databaseManager.UpdateScoreValue(_game.ScoreTarget.ToString());
+            _databaseManager.UpdateModeValue(_appSettings.Theme);
+        }
 
-        // todo: Create GameModel table and save game settings to database
-        // todo: create AppSettings table and save app settings to database
-
-        //if (_databaseManager.Size() > 0 || _databaseManager != null)
-        //{
-        //    _databaseManager.SetLastTeamName(0);
-        //    _databaseManager.SetLastTeamName(1);
-        //    _databaseManager.UpdateValueByKey("modeValue", _appSettings.Theme);
-        //    _databaseManager.UpdateValueByKey("scoreValue", _game.ScoreTarget.ToString());
-        //}
-        _databaseManager.UpdateValueByKey("scoreValue", _game.ScoreTarget.ToString());
-
+        isPropertyChanged = false;
         this.Close();
     }
 
@@ -79,6 +77,7 @@ public partial class SettingsPopup : Popup
 
         _game.TeamOneName = entry_Team1.Text;
         _game.TeamTwoName = entry_Team2.Text;
+        isPropertyChanged = true;
     }
 
     //  Score settings 
@@ -94,28 +93,31 @@ public partial class SettingsPopup : Popup
         new ScoreDisplayModel { Score = 701, IsSelected = false },
         new ScoreDisplayModel { Score = 501, IsSelected = false },
         new ScoreDisplayModel { Score = 301, IsSelected = false }
+
     };
+
     private void SetScoresButton_Clicked(object sender, EventArgs e)
-    {
+    {        
+        ScoreDisplay.First(t => t.Score == _game.ScoreTarget).IsSelected = true;
         frame_TeamSettings.IsVisible = false;
         frame_ScoresSettings.IsVisible = true;
     }
     private void CloseScoresSettingsButton_Clicked(object sender, EventArgs e)
     {
-        _game.ScoreTarget = (ScoreDisplay.FirstOrDefault(s => s.IsSelected)).Score;
+        if(ScoreDisplay.FirstOrDefault() != null)
+        {
+            isPropertyChanged = true;
+            _game.ScoreTarget = ScoreDisplay.First(s => s.IsSelected).Score;
+        }else
+        {
+            _game.ScoreTarget = _databaseManager.GetIntScoreValue();
+        }
         frame_ScoresSettings.IsVisible = false;
-    }
-
-    private void DeleteLastResultButton_Clicked(object sender, EventArgs e)
-    {
-        //mainPage.DeleteLastResult();
-        // todo: delete from database
-        // on main page implement a method that will delete the last result
-        CloseWindow();
     }
 
     private void DarkModeSwitch_Toggled(object sender, ToggledEventArgs e)
     {
+        isPropertyChanged = true;
         _appSettings.Theme = e.Value ? "Dark" : "Light";
     }
 }

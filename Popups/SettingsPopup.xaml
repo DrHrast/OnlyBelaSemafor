@@ -58,8 +58,7 @@
                     </Grid>
                     <Button Grid.Row="1" Margin="12" Text="Postavi timove" Clicked="SetTeamsButton_Clicked"/>
                     <Button Grid.Row="2" Margin="12" Text="Postavi bodove" Clicked="SetScoresButton_Clicked"/>
-                    <Button Grid.Row="3" Margin="12" Text="Obriši zadnji rezultat" Clicked="DeleteLastResultButton_Clicked"/>
-                    
+
                     <!-- Score  settings -->
                     <Frame x:Name="frame_ScoresSettings" IsVisible="False" Grid.Row="4" BackgroundColor="LightGray" BorderColor="LightGray" Margin="5">
                       <StackLayout>

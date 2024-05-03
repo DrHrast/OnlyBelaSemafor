@@ -142,30 +142,20 @@ namespace OnlyBelaSemafor
         //     SETTINGS     //
         //******************//
 
-        //public void AddSettings(SettingsModel settingsModel)
+        //public void UpdateValueByKey(string key, string newValue)
         //{
-        //    database.Insert(settingsModel);
-        //}
-        public void UpdateValueByKey(string key, string newValue)
-        {
-            var entry = database.Table<SettingsModel>().FirstOrDefault(x => x.Key == key);
+        //    //var entry = database.Table<SettingsModel>().FirstOrDefault(x => x.Key.Equals(key)).Value = newValue;
 
-            if (entry != null)
-            {
-                entry.Value = newValue;
-                database.Update(entry);
-            }
-        }
+        //    //if (entry != null)
+        //    //{
+        //    //    database.Update(entry);
+        //    //}
+        //}
 
         public SettingsModel GetModelByKey(string key)
         {
             return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key);
         }
-
-        //public SettingsModel GetLastSetting()
-        //{
-        //    return database.Table<SettingsModel>().OrderByDescending(sett => sett.Id).FirstOrDefault();
-        //}
 
         public int GetIntScoreValue()
         {
@@ -179,10 +169,30 @@ namespace OnlyBelaSemafor
             return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value == "Light" ? false : true; 
         }
 
+        public void UpdateScoreValue(string score)
+        {
+            var prevValue = database.Table<SettingsModel>().FirstOrDefault(x => x.Key == "scoreValue");
+            if (prevValue != null)
+            {
+                prevValue.Value = score;
+                database.Update(prevValue);
+            }
+        }
+
+        public void UpdateModeValue(string mode)
+        {
+            var prevValue = database.Table<SettingsModel>().FirstOrDefault(x => x.Key == "modeValue");
+            if (prevValue != null)
+            {
+                prevValue.Value = mode;
+                database.Update(prevValue);
+            }
+        }
+
         public void RevertToDefaultSettings()
         {
-            UpdateValueByKey("scoreValue", defaultValueForScoreKey);
-            UpdateValueByKey("modeValue", defaultValueForModeKey);
+            UpdateScoreValue(defaultValueForScoreKey);
+            UpdateModeValue(defaultValueForModeKey);
         }
     }
 }
