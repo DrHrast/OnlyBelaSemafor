@@ -5,6 +5,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/LightTheme.xaml" /> 
+                <!--  Light mode  -->
+                <ResourceDictionary Source="Resources/Styles/DarkTheme.xaml" /> 
+                <!--  Dark mode  -->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

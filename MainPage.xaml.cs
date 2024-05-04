@@ -348,6 +348,7 @@ namespace OnlyBelaSemafor
             game = App.Current.Services.GetRequiredService<GameModel>();
             game.PropertyChanged += Game_PropertyChanged;
             cv_scoreContent.ItemsSource = Scores;
+            App.Current.UserAppTheme = databaseManager.IsDarkModeOn() ? AppTheme.Dark : AppTheme.Light;
 
             LoadGameData();
             CheckDb();

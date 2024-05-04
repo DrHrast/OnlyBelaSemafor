@@ -4,10 +4,7 @@
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                CanBeDismissedByTappingOutsideOfPopup="False" Size="300, 400">
 
-    <!--<VerticalStackLayout>
-            <Label Text="This is a very important message!" />
-        </VerticalStackLayout>-->
-    <Grid BackgroundColor="AntiqueWhite">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
@@ -16,7 +13,9 @@
         <!--  Header  -->
         <Frame Grid.Row="0"
                Margin="5,5,5,5" Padding="0"
-               BackgroundColor="DarkGray" CornerRadius="8">
+               BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},
+                                                 Dark={StaticResource DarkPrimaryColor}}"
+               CornerRadius="8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -38,15 +37,15 @@
             <ScrollView>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="80" /> 
+                        <RowDefinition Height="80" />
                         <!--  Set team name  -->
-                        <RowDefinition Height="auto" /> 
+                        <RowDefinition Height="auto" />
                         <!--  Delete last score  -->
-                        <RowDefinition Height="auto" /> 
+                        <RowDefinition Height="auto" />
                         <!--  Set playing score  -->
-                        <RowDefinition Height="auto" /> 
+                        <RowDefinition Height="auto" />
                         <!--  Layout Mode  -->
-                        <RowDefinition Height="auto" /> 
+                        <RowDefinition Height="auto" />
                         <!--  Something  -->
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Margin="2,2,2,12">

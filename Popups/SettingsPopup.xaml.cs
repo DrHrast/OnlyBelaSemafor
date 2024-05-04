@@ -116,5 +116,7 @@ public partial class SettingsPopup : Popup
     {
         isPropertyChanged = true;
         _appSettings.Theme = e.Value ? "Dark" : "Light";
+        _databaseManager.UpdateModeValue(_appSettings.Theme);
+        App.Current.UserAppTheme = _appSettings.Theme == "Light" ? AppTheme.Light : AppTheme.Dark;
     }
 }
