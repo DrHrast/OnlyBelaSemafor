@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-            x:Class="OnlyBelaSemafor.MainPage">
+<ContentPage x:Class="OnlyBelaSemafor.MainPage" xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <Grid BackgroundColor="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-    
-        <!--Header-->
-        <Frame Grid.Row="0" Margin="5, 5, 5, 5" CornerRadius="8" BackgroundColor="DarkGray" Padding="0">
+
+        <!--  Header  -->
+        <Frame Grid.Row="0"
+               Margin="5,5,5,5" Padding="0"
+               BackgroundColor="DarkGray" CornerRadius="8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -21,31 +20,40 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <ImageButton Source="round_plus_button_sized.png" Scale="0.57" Grid.Column="0" Clicked="PlusImageButton_Clicked"/>
-                <ImageButton Source="round_minus_button_sized.png" Scale="0.5" Grid.Column="1" Clicked="MinusImageButton_Clicked"/>
-                <Label Text="BELA SEMAFOR" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="2"/>
-                <ImageButton Source="round_question_mark_sized.png" Grid.Column="3" Scale="0.4" Clicked="HelpImageButton_Clicked"/>
-                <ImageButton Source="gear_button_sized.png" Grid.Column="4" Scale="0.4" Clicked="GearImageButton_Clicked"/>
+                <ImageButton Grid.Column="0" Clicked="PlusImageButton_Clicked" Scale="0.57" Source="round_plus_button_sized.png" />
+                <ImageButton x:Name="deleteLastScoreButton"
+                             Grid.Column="1"
+                             Clicked="MinusImageButton_Clicked" IsEnabled="False" Scale="0.5" Source="round_minus_button_sized.png" />
+                <Label Grid.Column="2"
+                       FontSize="Medium" HorizontalTextAlignment="Center" Text="BELA SEMAFOR" TextColor="Black"
+                       VerticalTextAlignment="Center" />
+                <ImageButton Grid.Column="3" Clicked="HelpImageButton_Clicked" Scale="0.4" Source="round_question_mark_sized.png" />
+                <ImageButton Grid.Column="4" Clicked="GearImageButton_Clicked" Scale="0.4" Source="gear_button_sized.png" />
             </Grid>
         </Frame>
-        
-        <!--Body-->
-        <Frame Grid.Row="1" Margin="5, 0, 5, 5" CornerRadius="8" BackgroundColor="LightGray" Padding="15, 10, 15, 10">
+
+        <!--  Body  -->
+        <Frame Grid.Row="1"
+               Margin="5,0,5,5" Padding="15,10,15,10"
+               BackgroundColor="LightGray" CornerRadius="8">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" /> <!--Data Input-->
-                    <RowDefinition Height="auto" /> <!--Calculate Button-->
-                    <RowDefinition Height="*" /> <!--Score-->
+                    <RowDefinition Height="*" />
+                    <!--  Data Input  -->
+                    <RowDefinition Height="auto" />
+                    <!--  Calculate Button  -->
+                    <RowDefinition Height="*" />
+                    <!--  Score  -->
                 </Grid.RowDefinitions>
 
-                <!--Data Entry-->
+                <!--  Data Entry  -->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    
-                    <!--Team One Data Entry-->                
+
+                    <!--  Team One Data Entry  -->
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -54,75 +62,61 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <RadioButton Grid.Row="0" 
-                                     x:Name="nameOfTeam1" 
-                                     GroupName="TeamCall" 
-                                     HorizontalOptions="Center"
-                                     CheckedChanged="TeamOneRadio_CheckedChanged"/>
-                        <!--Score-->
+                        <RadioButton x:Name="nameOfTeam1"
+                                     Grid.Row="0"
+                                     CheckedChanged="TeamOneRadio_CheckedChanged" GroupName="TeamCall" HorizontalOptions="Center" />
+                        <!--  Score  -->
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Rezultat:" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
-                            <Entry Grid.Column="1"
-                                   x:Name="teamOneScoreEntry"
-                                   Placeholder="0"
-                                   VerticalOptions="Center"
+                            <Label Grid.Column="0" HorizontalTextAlignment="End" Text="Rezultat:" VerticalTextAlignment="Center" />
+                            <Entry x:Name="teamOneScoreEntry"
+                                   Grid.Column="1"
                                    Margin="0"
-                                   Scale="0.5"
-                                   FontSize="35"
-                                   Keyboard="Numeric"
-                                   TextChanged="TeamOneScoreEntry_TextChanged"/>
+                                   FontSize="35" Keyboard="Numeric" Placeholder="0" Scale="0.5"
+                                   TextChanged="TeamOneScoreEntry_TextChanged" VerticalOptions="Center" />
                         </Grid>
-                        <!--Call-->
+                        <!--  Call  -->
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Zvanja:" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
-                            <Entry Grid.Column="1"
-                                   x:Name="teamOneCallEntry"
-                                   Placeholder="0"
-                                   VerticalOptions="Center"
+                            <Label Grid.Column="0" HorizontalTextAlignment="End" Text="Zvanja:" VerticalTextAlignment="Center" />
+                            <Entry x:Name="teamOneCallEntry"
+                                   Grid.Column="1"
                                    Margin="0"
-                                   Scale="0.5"
-                                   FontSize="35"
-                                   Keyboard="Numeric"/>
+                                   FontSize="35" Keyboard="Numeric" Placeholder="0" Scale="0.5"
+                                   VerticalOptions="Center" />
                         </Grid>
-                        <!--Bela-->
+                        <!--  Bela  -->
                         <Grid Grid.Row="3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Bela:" HorizontalOptions="End" VerticalOptions="Center"/>
-                            <CheckBox Grid.Column="1"
-                                      x:Name="teamOneBelaCheck"
-                                      HorizontalOptions="Start"
-                                      VerticalOptions="Center"
-                                      Margin="10, 0, 0, 0"
-                                      CheckedChanged="TeamOneBelaCheck_CheckedChanged"/>
+                            <Label Grid.Column="0" HorizontalOptions="End" Text="Bela:" VerticalOptions="Center" />
+                            <CheckBox x:Name="teamOneBelaCheck"
+                                      Grid.Column="1"
+                                      Margin="10,0,0,0"
+                                      CheckedChanged="TeamOneBelaCheck_CheckedChanged" HorizontalOptions="Start" VerticalOptions="Center" />
                         </Grid>
-                        <!--Stilja-->
-                        <Grid Grid.Row="4" IsVisible="False" x:Name="TeamOneStilja">
+                        <!--  Stilja  -->
+                        <Grid x:Name="TeamOneStilja" Grid.Row="4" IsVisible="False">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Štilja:" HorizontalOptions="End" VerticalOptions="Center"/>
+                            <Label Grid.Column="0" HorizontalOptions="End" Text="Štilja:" VerticalOptions="Center" />
                             <CheckBox Grid.Column="1"
-                                      HorizontalOptions="Start"
-                                      VerticalOptions="Center"
-                                      Margin="10, 0, 0, 0"
-                                      ClassId="Stilja"
-                                      IsEnabled="False"/>
+                                      Margin="15,0,0,0"
+                                      ClassId="Stilja" HorizontalOptions="Start" VerticalOptions="Center" />
                         </Grid>
                     </Grid>
-                
-                    <!--Team Two Data Entry-->
+
+                    <!--  Team Two Data Entry  -->
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -131,89 +125,86 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <RadioButton Grid.Row="0" 
-                                     x:Name="nameOfTeam2" 
-                                     GroupName="TeamCall" 
-                                     HorizontalOptions="Center"
-                                     CheckedChanged="TeamTwoRadio_CheckedChanged"/>
+                        <RadioButton x:Name="nameOfTeam2"
+                                     Grid.Row="0"
+                                     CheckedChanged="TeamTwoRadio_CheckedChanged" GroupName="TeamCall" HorizontalOptions="Center" />
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Rezultat:" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
-                            <Entry Grid.Column="1"
-                                   x:Name="teamTwoScoreEntry"
-                                   Placeholder="0"
-                                   VerticalOptions="Center"
+                            <Label Grid.Column="0" HorizontalTextAlignment="End" Text="Rezultat:" VerticalTextAlignment="Center" />
+                            <Entry x:Name="teamTwoScoreEntry"
+                                   Grid.Column="1"
                                    Margin="0"
-                                   Scale="0.5"
-                                   FontSize="35"
-                                   Keyboard="Numeric"
-                                   TextChanged="TeamTwoScoreEntry_TextChanged"/>
+                                   FontSize="35" Keyboard="Numeric" Placeholder="0" Scale="0.5"
+                                   TextChanged="TeamTwoScoreEntry_TextChanged" VerticalOptions="Center" />
                         </Grid>
-                        <!--Call-->
+                        <!--  Call  -->
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Zvanja:" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
-                            <Entry Grid.Column="1"
-                                   x:Name="teamTwoCallEntry"
-                                   Placeholder="0"
-                                   VerticalOptions="Center"
+                            <Label Grid.Column="0" HorizontalTextAlignment="End" Text="Zvanja:" VerticalTextAlignment="Center" />
+                            <Entry x:Name="teamTwoCallEntry"
+                                   Grid.Column="1"
                                    Margin="0"
-                                   Scale="0.5"
-                                   FontSize="35"
-                                   Keyboard="Numeric"/>
+                                   FontSize="35" Keyboard="Numeric" Placeholder="0" Scale="0.5"
+                                   VerticalOptions="Center" />
                         </Grid>
-                        <!--Bela-->
+                        <!--  Bela  -->
                         <Grid Grid.Row="3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Bela:" HorizontalOptions="End" VerticalOptions="Center"/>
-                            <CheckBox Grid.Column="1"
-                                      x:Name="teamTwoBelaCheck"
-                                      HorizontalOptions="Start"
-                                      VerticalOptions="Center"
-                                      Margin="10, 0, 0, 0"
-                                      CheckedChanged="TeamTwoBelaCheck_CheckedChanged"/>
+                            <Label Grid.Column="0" HorizontalOptions="End" Text="Bela:" VerticalOptions="Center" />
+                            <CheckBox x:Name="teamTwoBelaCheck"
+                                      Grid.Column="1"
+                                      Margin="10,0,0,0"
+                                      CheckedChanged="TeamTwoBelaCheck_CheckedChanged" HorizontalOptions="Start" VerticalOptions="Center" />
                         </Grid>
-                        <!--Stilja-->
-                        <Grid Grid.Row="4" IsVisible="False" x:Name="TeamTwoStilja">
+                        <!--  Stilja  -->
+                        <Grid x:Name="TeamTwoStilja" Grid.Row="4" IsVisible="False">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="Štilja:" HorizontalOptions="End" VerticalOptions="Center"/>
+                            <Label Grid.Column="0" HorizontalOptions="End" Text="Štilja:" VerticalOptions="Center" />
                             <CheckBox Grid.Column="1"
-                                      HorizontalOptions="Start"
-                                      VerticalOptions="Center"
-                                      Margin="10, 0, 0, 0"
-                                      ClassId="Stilja"
-                                      IsEnabled="False"/>
+                                      Margin="15,0,0,0"
+                                      ClassId="Stilja" HorizontalOptions="Start" VerticalOptions="Center" />
                         </Grid>
                     </Grid>
                 </Grid>
 
                 <Grid Grid.Row="1">
-                    <Button Text="DODAJ" 
+                    <Button x:Name="addButton"
                             Grid.Row="4"
-                            x:Name="addButton"
-                            Margin="25, 0, 25, 10" 
-                            Padding="10"
-                            Clicked="AddButton_Clicked"/>
+                            Margin="25,0,25,10" Padding="10"
+                            Clicked="AddButton_Clicked" Text="DODAJ" />
                 </Grid>
-                <TableView x:Name="scoreContent" Grid.Row="2">
-                    <TableRoot>
-                        <TableSection x:Name="Scores">
-                            
-                        </TableSection>
-                    </TableRoot>
-                </TableView>
+                <CollectionView x:Name="cv_scoreContent" Grid.Row="2">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0"
+                                       FontSize="20" HorizontalOptions="Center"
+                                       Text="{Binding Team1}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       FontSize="20" HorizontalOptions="Center"
+                                       Text="{Binding Team2}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Grid>
         </Frame>
     </Grid>

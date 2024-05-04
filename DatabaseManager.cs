@@ -32,8 +32,8 @@ namespace OnlyBelaSemafor
                 {
                     Key = "scoreValue",
                     Value = "1001"
-                }); 
-                
+                });
+
                 database.Insert(new SettingsModel
                 {
                     Key = "modeValue",
@@ -81,7 +81,7 @@ namespace OnlyBelaSemafor
         {
             return database.Table<ResultModel>().ToList();
         }
-        
+
         public List<ResultModel> GetTeamsDesc()
         {
             return database.Table<ResultModel>().OrderByDescending(t => t.Id).ToList();
@@ -92,10 +92,10 @@ namespace OnlyBelaSemafor
             return database.Table<ResultModel>().OrderByDescending(team => team.Id).FirstOrDefault();
         }
 
-        public string GetLastTeamName(int id) 
-        { 
-            var lastTeam = LastRow(); 
-            return id == 0 ? lastTeam?.team1Name ?? string.Empty : lastTeam?.team2Name ?? string.Empty; 
+        public string GetLastTeamName(int id)
+        {
+            var lastTeam = LastRow();
+            return id == 0 ? lastTeam?.team1Name ?? string.Empty : lastTeam?.team2Name ?? string.Empty;
         }
 
         public void SetLastTeamName(int id)
@@ -114,6 +114,7 @@ namespace OnlyBelaSemafor
         public List<int> GetLastTotal()
         {
             var lastTotal = LastRow();
+            if (lastTotal == null) { return null; }
             List<int> rez = new List<int>() {
                 lastTotal.team1TotalScore,
                 lastTotal.team2TotalScore
@@ -166,7 +167,7 @@ namespace OnlyBelaSemafor
         public bool IsDarkModeOn()
         {
             string key = "modeValue";
-            return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value == "Light" ? false : true; 
+            return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value == "Light" ? false : true;
         }
 
         public void UpdateScoreValue(string score)

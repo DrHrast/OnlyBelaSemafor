@@ -72,7 +72,7 @@ public partial class SettingsPopup : Popup
         if (string.IsNullOrEmpty(entry_Team1.Text) || string.IsNullOrEmpty(entry_Team2.Text))
         {
             // todo: Show error message
-            return;
+            //return;
         }
 
         _game.TeamOneName = entry_Team1.Text;
@@ -104,14 +104,11 @@ public partial class SettingsPopup : Popup
     }
     private void CloseScoresSettingsButton_Clicked(object sender, EventArgs e)
     {
-        if(ScoreDisplay.FirstOrDefault() != null)
-        {
-            isPropertyChanged = true;
-            _game.ScoreTarget = ScoreDisplay.First(s => s.IsSelected).Score;
-        }else
-        {
-            _game.ScoreTarget = _databaseManager.GetIntScoreValue();
-        }
+        isPropertyChanged = true;
+        _game.ScoreTarget = ScoreDisplay.First(s => s.IsSelected).Score;
+
+        _databaseManager.UpdateScoreValue(_game.ScoreTarget.ToString());
+        
         frame_ScoresSettings.IsVisible = false;
     }
 

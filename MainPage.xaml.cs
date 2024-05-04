@@ -3,22 +3,27 @@ using OnlyBelaSemafor.Services;
 using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Internals;
+using System.Collections.ObjectModel;
 
 namespace OnlyBelaSemafor
 {
     public partial class MainPage : ContentPage
     {
 
+        public class Result 
+        {
+            public int Team1 { get; set; }
+            public int Team2 { get; set; }
+        }
+
         //******************//
         //     VARIABLES    //
         //******************//
         private DatabaseManager databaseManager;
         private readonly GameModel game;
-        List<List<int>> listOfGameResults = new List<List<int>>();
+        public ObservableCollection<Result> Scores = [];
         private const int GAME = 162;
         private int points;
-        private string nameOfTheFirstTeam = "TeamOne";
-        private string nameOfTheSecondTeam = "TeamTwo";
         private bool teamThatCalled;
         private bool isTeamCallChecked;
 
@@ -28,30 +33,22 @@ namespace OnlyBelaSemafor
 
         public void DeleteLastResult()
         {
-            if(!IsDbEmpty())
-            {
-                databaseManager.DeleteLastRowById(databaseManager.GetLastId());
-                CheckDb();
-                Output();
-            }
+            databaseManager.DeleteLastRowById(databaseManager.GetLastId());
+            Scores.Remove(Scores.Last());
+            //listOfGameResults.Remove(listOfGameResults.Last());
+            Output();
         }
         public void NewGame()
         {
             LoadGameData();
-            SetNameVariables();
             databaseManager.ClearDb();
             ClearingInputs();
-            listOfGameResults.Clear();
+            //listOfGameResults.Clear();
             Output();
         }
         public void QuitGame()
         {
             App.Current.Quit();
-        }
-        private void SetNameVariables()
-        {
-            nameOfTheFirstTeam = game.TeamOneName;
-            nameOfTheSecondTeam = game.TeamTwoName;
         }
         private bool IsDbEmpty()
         {
@@ -61,10 +58,10 @@ namespace OnlyBelaSemafor
         {
             if (!IsDbEmpty())
             {
-                listOfGameResults.Add(databaseManager.GetLastTotal());
                 game.TeamOneName = databaseManager.GetLastTeamName(0);
                 game.TeamTwoName = databaseManager.GetLastTeamName(1);
                 points = databaseManager.GetIntScoreValue();
+                deleteLastScoreButton.IsEnabled = true;
             }
         }        
         private void LoadGameData()
@@ -99,11 +96,16 @@ namespace OnlyBelaSemafor
             teamThatCalled = false;
             isTeamCallChecked = false;
         }
-        private void ResultOutput(ResultModel result)
+        private void CalculateScore(ResultModel result)
         {
-
             //TODO: 5 Figue out where the score is lost for team two when it's 162 and 0 for team one
             //TODO: 5.1 Team that called doesn't work in favor of team two
+            List<List<int>> listOfGameResults = [];
+            var lastResult = databaseManager.GetLastTotal();
+            if (lastResult is not null)
+            {
+                listOfGameResults.Add(lastResult);
+            }
             ResultService resultService = new ResultService();
             var temp = new List<List<int>>();
             temp.Add(resultService.SumResults(result));
@@ -186,76 +188,32 @@ namespace OnlyBelaSemafor
         }
         private void Output()
         {
+            Scores.Clear();
             var lastResults = databaseManager.GetTeamsDesc();
-
-            var tableSection = new TableSection();
-
             foreach (var result in lastResults)
             {
-                var grid = new Grid
-                {
-                    Padding = new Thickness(10),
-                    ColumnDefinitions =
-                        {
-                            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-                            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
-                        }
-                };
-                //var team1Header = new Label { Text = nameOfTheFirstTeam, VerticalOptions = LayoutOptions.CenterAndExpand };
-                //var team2Header = new Label { Text = nameOfTheSecondTeam, VerticalOptions = LayoutOptions.CenterAndExpand };
-
-                //headerGrid.Children.Add(team1Header);
-                //headerGrid.Children.Add(team2Header);
-
-                //Grid.SetColumn(team1Header, 0);
-                //Grid.SetColumn(team2Header, 1);
-
-                //var headerCell = new ViewCell { View = headerGrid };
-                //tableSection.Add(headerCell);
-
-                var team1Label = new Label
-                {
-                    Text = result.team1TotalScore.ToString(),
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
-                    FontSize = 20
-                };
-                var team2Label = new Label 
-                { 
-                    Text = result.team2TotalScore.ToString(), 
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
-                    FontSize = 20
-                };
-
-                grid.Children.Add(team1Label);
-                grid.Children.Add(team2Label);
-
-                Grid.SetColumn(team1Label, 0);
-                Grid.SetColumn(team2Label, 1);
-
-                var viewCell = new ViewCell { View = grid };
-                tableSection.Add(viewCell);
+                Scores.Add( new Result{Team1 = result.team1TotalScore, Team2 = result.team2TotalScore});
             }
-
-            scoreContent.Root.Clear();
-            scoreContent.Root.Add(tableSection);
-            //LoadGameData();
         }       
         private void CheckVictoryConditions()
         {
-            List<int> totalScores = new List<int>(databaseManager.GetLastTotal());
-            if (totalScores[0] >= points)
+            //List<int> totalScores = new List<int>(databaseManager.GetLastTotal());
+            if (Scores.First().Team1 >= points)
             {
                 //Team one won
-                this.ShowPopup(new VictoryPopup(this, databaseManager.GetLastTeamName(0)));
+                this.ShowPopup(new VictoryPopup(this, game.TeamOneName));
             }
-            else if (totalScores[1] >= points)
+            else if (Scores.First().Team2 >= points)
             {
                 //Team two won
-                this.ShowPopup(new VictoryPopup(this, databaseManager.GetLastTeamName(1)));
+                this.ShowPopup(new VictoryPopup(this, game.TeamTwoName));
             }
             else { return; }
+        }
+        private void SetStiljaVisibility()
+        {
+            TeamTwoStilja.IsVisible = teamOneScoreEntry.Text == "0";
+            TeamOneStilja.IsVisible = teamTwoScoreEntry.Text == "0";
         }
 
         //******************//
@@ -280,6 +238,7 @@ namespace OnlyBelaSemafor
                 ClearEntryAndShowPlaceholder(teamTwoScoreEntry, "0");
                 ClearEntryAndShowPlaceholder(teamOneScoreEntry, "0");
             }
+            SetStiljaVisibility();
         }
         private void TeamTwoScoreEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -300,6 +259,7 @@ namespace OnlyBelaSemafor
                 ClearEntryAndShowPlaceholder(teamOneScoreEntry, "0");
                 ClearEntryAndShowPlaceholder(teamTwoScoreEntry, "0");
             }
+            SetStiljaVisibility();
         }
         private void TeamOneBelaCheck_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
@@ -339,7 +299,7 @@ namespace OnlyBelaSemafor
                     team2Call = string.IsNullOrEmpty(teamTwoCallEntry.Text) ? 0 : int.Parse(teamTwoCallEntry.Text)
                 };
 
-                ResultOutput(result);
+                CalculateScore(result);
                 CheckVictoryConditions();
                 ClearingInputs();
             }
@@ -359,6 +319,10 @@ namespace OnlyBelaSemafor
         private void Game_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             LoadGameData();
+        }
+        private void Score_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            deleteLastScoreButton.IsEnabled = Scores.Count > 0;
         }
 
         //******************//
@@ -383,11 +347,14 @@ namespace OnlyBelaSemafor
             databaseManager = App.Current.Services.GetRequiredService<DatabaseManager>();
             game = App.Current.Services.GetRequiredService<GameModel>();
             game.PropertyChanged += Game_PropertyChanged;
+            cv_scoreContent.ItemsSource = Scores;
 
             LoadGameData();
             CheckDb();
             game.ScoreTarget = points;
             Output();
+            Scores.CollectionChanged += Score_CollectionChanged;
         }
+
     }
 }

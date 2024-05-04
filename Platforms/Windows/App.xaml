@@ -1,8 +1,3 @@
-﻿<maui:MauiWinUIApplication
-    x:Class="OnlyBelaSemafor.WinUI.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:maui="using:Microsoft.Maui"
-    xmlns:local="using:OnlyBelaSemafor.WinUI">
-
-</maui:MauiWinUIApplication>
+﻿<maui:MauiWinUIApplication x:Class="OnlyBelaSemafor.WinUI.App"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:local="using:OnlyBelaSemafor.WinUI" xmlns:maui="using:Microsoft.Maui" />

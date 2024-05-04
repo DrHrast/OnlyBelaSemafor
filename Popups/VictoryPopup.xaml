@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<toolkit:Popup x:Class="OnlyBelaSemafor.VictoryPopup"
+               xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               x:Class="OnlyBelaSemafor.VictoryPopup"
-               Size="300, 300">
+               CanBeDismissedByTappingOutsideOfPopup="False" Size="300, 300">
     <Grid BackgroundColor="AntiqueWhite">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -11,20 +10,28 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--Header-->
-        <Frame Grid.Row="0" Margin="5, 5, 5, 5" CornerRadius="8" BackgroundColor="DarkGray" Padding="0">
+        <!--  Header  -->
+        <Frame Grid.Row="0"
+               Margin="5,5,5,5" Padding="0"
+               BackgroundColor="DarkGray" CornerRadius="8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
-                <Label Text="PlaceholderText" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" Margin="10, 0" />
-                <ImageButton Source="close_popup.png" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Clicked="CloseButton_Clicked" Scale="0.5"/>
+                <Label Grid.Column="0"
+                       Margin="10,0"
+                       HorizontalOptions="Start" Text="PlaceholderText" VerticalOptions="Center" />
+                <ImageButton Grid.Column="1"
+                             Clicked="CloseButton_Clicked" HorizontalOptions="Center" Scale="0.5" Source="close_popup.png"
+                             VerticalOptions="Center" />
             </Grid>
         </Frame>
 
-        <!--Body-->
-        <Frame Grid.Row="1" Margin="5, 0, 5, 5" CornerRadius="8" BackgroundColor="LightGray" Padding="0">
+        <!--  Body  -->
+        <Frame Grid.Row="1"
+               Margin="5,0,5,5" Padding="0"
+               BackgroundColor="LightGray" CornerRadius="8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -32,10 +39,15 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <Label Text="Pobjedio je tim" Grid.Row="0" HorizontalOptions="Center" Margin="5" FontSize="Medium" Padding="5"/>
-                <Label x:Name="victoryLabel" Grid.Row="1" HorizontalOptions="Center" Margin="5" FontSize="Title" Padding="10"/>
-                <Button Grid.Row="2" Margin="12" Text="Nova Igra" Clicked="NewGameButton_Clicked"/>
-                <Button Grid.Row="3" Margin="12" Text="Izlaz iz aplikacije" Clicked="ExitButton_Clicked"/>
+                <Label Grid.Row="0"
+                       Margin="5" Padding="5"
+                       FontSize="Medium" HorizontalOptions="Center" Text="Pobjedio je tim" />
+                <Label x:Name="victoryLabel"
+                       Grid.Row="1"
+                       Margin="5" Padding="10"
+                       FontSize="Title" HorizontalOptions="Center" />
+                <Button Grid.Row="2" Margin="12" Clicked="NewGameButton_Clicked" Text="Nova Igra" />
+                <Button Grid.Row="3" Margin="12" Clicked="ExitButton_Clicked" Text="Izlaz iz aplikacije" />
             </Grid>
         </Frame>
     </Grid>
