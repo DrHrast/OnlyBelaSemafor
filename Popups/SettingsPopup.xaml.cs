@@ -15,7 +15,7 @@ public partial class SettingsPopup : Popup
 
     public SettingsPopup()
     {
-        //TODO n: Switch not set as it should be
+        //DID_IT 7: Switch not set as it should be
         InitializeComponent();
 
         _game = App.Current.Services.GetRequiredService<GameModel>();
@@ -43,7 +43,7 @@ public partial class SettingsPopup : Popup
 
     private void CloseWindow()
     {
-        //TODO: 2. Implement database entry
+        //DID_IT: 2. Implement database entry
         //TODO: 3. Implement control for reverting to default settings
         // DID_IT: 7. Create GameModel table and save game settings to database
         // DID_IT: 8. create AppSettings table and save app settings to database

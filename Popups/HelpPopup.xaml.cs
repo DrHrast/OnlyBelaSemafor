@@ -40,25 +40,24 @@ Menu Options:
         this.Close();
     }
 
-    private void LoadHelpText(string fileName)
+    async Task<string> LoadMauiAsset()
     {
+        using var stream = await FileSystem.OpenAppPackageFileAsync("UserInstructions.txt");
+        using var reader = new StreamReader(stream);
 
-        string currentDirectory = FileSystem.AppDataDirectory;
+       return reader.ReadToEnd();
+    }
+
+    private async void LoadHelpText(string fileName)
+    {
         try
         {
-            // Get the current working directory
-
-            // Combine the current directory with the file name
-            string filePath = Path.Combine(currentDirectory, fileName);
-
-            // Read all text from the file
-            string fileContent = File.ReadAllText(filePath);
-            helpMessage.Text = fileContent;
+            helpMessage.Text = await LoadMauiAsset();
         }
         catch
         {
             //helpMessage.Text = "Error 404: helpText not found.";
-            helpMessage.Text = _txt;
+            helpMessage.Text = "404";
         }
     }
 

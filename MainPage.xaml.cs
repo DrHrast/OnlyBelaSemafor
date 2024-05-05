@@ -4,6 +4,7 @@ using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Internals;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace OnlyBelaSemafor
 {
@@ -21,11 +22,12 @@ namespace OnlyBelaSemafor
         //******************//
         private DatabaseManager databaseManager;
         private readonly GameModel game;
+        private readonly AppSettings appSettings;
         public ObservableCollection<Result> Scores = [];
+        private TeamDisplayModel teamOneDisplay = new();
+        private TeamDisplayModel teamTwoDisplay = new();
         private const int GAME = 162;
         private int points;
-        private bool teamThatCalled;
-        private bool isTeamCallChecked;
 
         //******************//
         //      METHODS     //
@@ -66,9 +68,29 @@ namespace OnlyBelaSemafor
         }        
         private void LoadGameData()
         {
+            points = databaseManager.GetIntScoreValue();
+        }
+        private void LoadSettingsData()
+        {
+            appSettings.Theme = databaseManager.GetTheme();
+        }
+        private void LoadFrontend()
+        {
             nameOfTeam1.Content = game.TeamOneName;
             nameOfTeam2.Content = game.TeamTwoName;
-            points = databaseManager.GetIntScoreValue();
+            App.Current.UserAppTheme = appSettings.Theme == "Dark" ? AppTheme.Dark : AppTheme.Light;
+
+            //teamOneScoreEntry.Text = teamOneDisplay.Score.ToString();
+            //teamOneCallEntry.Text = teamOneDisplay.Call.ToString();
+            //teamOneBelaCheck.IsChecked = teamOneDisplay.IsBela;
+            //nameOfTeam1.IsChecked = teamOneDisplay.IsCall;
+            //cb_TeamOneStilja.IsChecked = teamOneDisplay.IsStilja;
+
+            //teamTwoScoreEntry.Text = teamTwoDisplay.Score.ToString();
+            //teamTwoCallEntry.Text = teamTwoDisplay.Call.ToString();
+            //teamTwoBelaCheck.IsChecked = teamTwoDisplay.IsBela;
+            //nameOfTeam2.IsChecked = teamTwoDisplay.IsCall;
+            //cb_TeamTwoStilja.IsChecked = teamTwoDisplay.IsStilja; 
         }
         private void ClearEntryAndShowPlaceholder(Entry entry, string placeholder)
         {
@@ -93,8 +115,8 @@ namespace OnlyBelaSemafor
             teamTwoBelaCheck.IsChecked = false;
             nameOfTeam1.IsChecked = false;
             nameOfTeam2.IsChecked = false;
-            teamThatCalled = false;
-            isTeamCallChecked = false;
+            TeamOneStilja.IsVisible = false;
+            TeamTwoStilja.IsVisible = false;
         }
         private void CalculateScore(ResultModel result)
         {
@@ -111,8 +133,10 @@ namespace OnlyBelaSemafor
             temp.Add(resultService.SumResults(result));
             bool oneHasBetterScore = temp[0][0] > temp[0][1];
             bool twoHasBetterScore = temp[0][0] < temp[0][1];
+            var isTeamCallChecked = teamOneDisplay.IsCall || teamTwoDisplay.IsCall;
             if (isTeamCallChecked == true)
             {
+                var teamThatCalled = teamOneDisplay.IsCall;
                 if (listOfGameResults.Count == 0)
                 {
                     if (teamThatCalled && oneHasBetterScore)
@@ -219,47 +243,37 @@ namespace OnlyBelaSemafor
         //******************//
         //      EVENTS      //
         //******************//
-        private void TeamOneScoreEntry_TextChanged(object sender, TextChangedEventArgs e)
+        
+        private void TeamScoreEntry_TextChanged(Entry current, Entry other)
         {
-            if (string.IsNullOrEmpty(teamOneScoreEntry.Text))
+            if (string.IsNullOrEmpty(current.Text))
             {
-                //team1ScoreEntry.Text = "0";
-                ClearEntryAndShowPlaceholder(teamOneScoreEntry, "0");
+                ClearEntryAndShowPlaceholder(current, "0");
+                ClearEntryAndShowPlaceholder(other, "0");
             }
-            else if (int.TryParse(teamOneScoreEntry.Text, out int team1Score) && int.Parse(teamOneScoreEntry.Text) <= 162)
+            else if (int.TryParse(current.Text, out int team1Score) && int.Parse(current.Text) <= 162)
             {
-                teamTwoScoreEntry.TextChanged -= TeamTwoScoreEntry_TextChanged;
                 int team2Score = GAME - team1Score;
-                teamTwoScoreEntry.Text = team2Score.ToString();
-                teamTwoScoreEntry.TextChanged += TeamTwoScoreEntry_TextChanged;
+                other.Text = team2Score.ToString();
             }
             else
             {
-                ClearEntryAndShowPlaceholder(teamTwoScoreEntry, "0");
-                ClearEntryAndShowPlaceholder(teamOneScoreEntry, "0");
+                ClearEntryAndShowPlaceholder(other, "0");
+                ClearEntryAndShowPlaceholder(current, "0");
             }
             SetStiljaVisibility();
         }
+        private void TeamOneScoreEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            teamTwoScoreEntry.TextChanged -= TeamTwoScoreEntry_TextChanged;
+            TeamScoreEntry_TextChanged(teamOneScoreEntry, teamTwoScoreEntry);
+            teamTwoScoreEntry.TextChanged += TeamTwoScoreEntry_TextChanged;
+        }
         private void TeamTwoScoreEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(teamTwoScoreEntry.Text))
-            {
-                //team2ScoreEntry.Text = "0";
-                ClearEntryAndShowPlaceholder(teamTwoScoreEntry, "0");
-            }
-            else if (int.TryParse(teamTwoScoreEntry.Text, out int team2Score) && int.Parse(teamTwoScoreEntry.Text) <= 162)
-            {
-                teamOneScoreEntry.TextChanged -= TeamOneScoreEntry_TextChanged;
-                int team1Score = GAME - team2Score;
-                teamOneScoreEntry.Text = team1Score.ToString();
-                teamOneScoreEntry.TextChanged += TeamOneScoreEntry_TextChanged;
-            }
-            else
-            {
-                ClearEntryAndShowPlaceholder(teamOneScoreEntry, "0");
-                ClearEntryAndShowPlaceholder(teamTwoScoreEntry, "0");
-            }
-            SetStiljaVisibility();
+            teamOneScoreEntry.TextChanged -= TeamOneScoreEntry_TextChanged;
+            TeamScoreEntry_TextChanged(teamTwoScoreEntry, teamOneScoreEntry);
+            teamOneScoreEntry.TextChanged += TeamOneScoreEntry_TextChanged;
         }
         private void TeamOneBelaCheck_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
@@ -271,13 +285,9 @@ namespace OnlyBelaSemafor
         }
         private void TeamOneRadio_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            isTeamCallChecked = true;
-            teamThatCalled = true;
         }
         private void TeamTwoRadio_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            isTeamCallChecked = true;
-            teamThatCalled = false;
         }
         private void AddButton_Clicked(object sender, EventArgs e)
         {
@@ -346,16 +356,19 @@ namespace OnlyBelaSemafor
 
             databaseManager = App.Current.Services.GetRequiredService<DatabaseManager>();
             game = App.Current.Services.GetRequiredService<GameModel>();
+            appSettings = App.Current.Services.GetRequiredService<AppSettings>();
             game.PropertyChanged += Game_PropertyChanged;
-            cv_scoreContent.ItemsSource = Scores;
-            App.Current.UserAppTheme = databaseManager.IsDarkModeOn() ? AppTheme.Dark : AppTheme.Light;
+            cv_scoreContent.ItemsSource = Scores;    
+            
+            BindingContext = this;
 
+            LoadSettingsData();
             LoadGameData();
+            LoadFrontend();
             CheckDb();
             game.ScoreTarget = points;
             Output();
             Scores.CollectionChanged += Score_CollectionChanged;
         }
-
     }
 }

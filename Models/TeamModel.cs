@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OnlyBelaSemafor.Models
 {
-    internal class TeamsModel
+    internal class TeamModel
     {
         [PrimaryKey, AutoIncrement]
         int id {  get; set; }

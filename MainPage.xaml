@@ -66,7 +66,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <RadioButton x:Name="nameOfTeam1"
+                        <RadioButton x:Name="nameOfTeam1" Content="{Binding game.TeamOneName}"
                                      Grid.Row="0"
                                      CheckedChanged="TeamOneRadio_CheckedChanged" GroupName="TeamCall" HorizontalOptions="Center" />
                         <!--  Score  -->
@@ -114,7 +114,8 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" HorizontalOptions="End" Text="Štilja:" VerticalOptions="Center" />
-                            <CheckBox Grid.Column="1"
+                            <CheckBox x:Name="cb_TeamOneStilja"
+                                      Grid.Column="1"
                                       Margin="15,0,0,0"
                                       ClassId="Stilja" HorizontalOptions="Start" VerticalOptions="Center" />
                         </Grid>
@@ -176,7 +177,8 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" HorizontalOptions="End" Text="Štilja:" VerticalOptions="Center" />
-                            <CheckBox Grid.Column="1"
+                            <CheckBox x:Name="cb_TeamTwoStilja"
+                                      Grid.Column="1"
                                       Margin="15,0,0,0"
                                       ClassId="Stilja" HorizontalOptions="Start" VerticalOptions="Center" />
                         </Grid>

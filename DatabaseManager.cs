@@ -164,10 +164,10 @@ namespace OnlyBelaSemafor
             return int.Parse(database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value);
         }
 
-        public bool IsDarkModeOn()
+        public string GetTheme()
         {
             string key = "modeValue";
-            return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value == "Light" ? false : true;
+            return database.Table<SettingsModel>().FirstOrDefault(s => s.Key == key).Value;
         }
 
         public void UpdateScoreValue(string score)
