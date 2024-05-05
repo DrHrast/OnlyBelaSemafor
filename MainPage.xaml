@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="OnlyBelaSemafor.MainPage" xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
-    <Grid BackgroundColor="{DynamicResource Primary}">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
             <RowDefinition Height="*" />
@@ -10,7 +10,9 @@
         <!--  Header  -->
         <Frame Grid.Row="0"
                Margin="5,5,5,5" Padding="0"
-               BackgroundColor="DarkGray" CornerRadius="8">
+               BackgroundColor="{AppThemeBinding Light={StaticResource LightHeader},
+                                                 Dark={StaticResource Gray600}}"
+               CornerRadius="8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -35,7 +37,9 @@
         <!--  Body  -->
         <Frame Grid.Row="1"
                Margin="5,0,5,5" Padding="15,10,15,10"
-               BackgroundColor="LightGray" CornerRadius="8">
+               BackgroundColor="{AppThemeBinding Light={StaticResource LightBody},
+                                                 Dark={StaticResource Gray500}}"
+               CornerRadius="8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />

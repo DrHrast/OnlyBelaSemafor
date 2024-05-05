@@ -4,7 +4,7 @@
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                CanBeDismissedByTappingOutsideOfPopup="False" Size="300, 400">
 
-    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
@@ -13,8 +13,8 @@
         <!--  Header  -->
         <Frame Grid.Row="0"
                Margin="5,5,5,5" Padding="0"
-               BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor},
-                                                 Dark={StaticResource DarkPrimaryColor}}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource LightHeader},
+                                                 Dark={StaticResource Gray600}}"
                CornerRadius="8">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -33,7 +33,8 @@
         <!--  Body  -->
         <Frame Grid.Row="1"
                Margin="5,0,5,5" Padding="0"
-               BackgroundColor="LightGray" CornerRadius="8">
+               BackgroundColor="{AppThemeBinding Light={StaticResource LightBody},
+                                  Dark={StaticResource Gray500}}" CornerRadius="8">
             <ScrollView>
                 <Grid>
                     <Grid.RowDefinitions>

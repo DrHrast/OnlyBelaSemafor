@@ -15,6 +15,7 @@ public partial class SettingsPopup : Popup
 
     public SettingsPopup()
     {
+        //TODO n: Switch not set as it should be
         InitializeComponent();
 
         _game = App.Current.Services.GetRequiredService<GameModel>();
