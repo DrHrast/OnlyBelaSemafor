@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace OnlyBelaSemafor.Models
 {
-    internal class TeamModel
+    public class TeamModel
     {
-        [PrimaryKey, AutoIncrement]
-        int id {  get; set; }
-        string name { get; set; }
-        int call {  get; set; }
-        int bela { get; set; }
-        int score { get; set; }
-        int totalScore { get; set; }
+        public string Name { get; set; }
+        public int Score { get; set; }
+        public int Call { get; set; }
+        public int Bela { get; set; }
+        public bool IsCalling { get; set; }
+        public bool IsStilja { get; set; }
     }
+
 }

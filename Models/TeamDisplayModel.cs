@@ -1,92 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace OnlyBelaSemafor.Models
 {
-    class TeamDisplayModel : INotifyPropertyChanged
+    public class TeamDisplayModel : INotifyPropertyChanged
     {
-        //public int ScoreTarget
-        //{
-        //    get => _scoreTarget;
-        //    set
-        //    {
-        //        _scoreTarget = value;
-        //        OnPropertyChanged(nameof(ScoreTarget));
-        //    }
-        //}
-        private string name;
-        private int score = 0;
-        private int placeholder = 0;
-        private int call;
-        private bool isBela;
-        private bool isCall;
-        private bool isStilja;
+        private string _name = "";
+        private int _score = 0;
+        private int _call = 0;
+        private bool _isBela;
+        private bool _isCalling;
+        private bool _isStilja;
+        private bool _isStiljaVisible;
 
         public string Name
         {
-            get => name;
+            get => _name;
             set
             {
-                name = value;
+                _name = value;
                 OnPropertyChanged();
             }
         }
+        
+        [Range(0, 162, ErrorMessage = "Unos mora biti između 0 i 162.")]
         public int Score
         {
-            get => score;
+            get => _score;
             set
             {
-                score = value;
-                OnPropertyChanged();
-            }
-        }
-        public int Placeholder
-        {
-            get => placeholder; 
-            set
-            {
-                placeholder = value;
+                _score = value;
                 OnPropertyChanged();
             }
         }
         public int Call 
         { 
-            get => call; 
+            get => _call; 
             set
             {
-                call = value;
+                _call = value;
                 OnPropertyChanged();
             }
         }
         public bool IsBela 
         { 
-            get => isBela;
+            get => _isBela;
             set
             {
-                isBela = value;
+                _isBela = value;
                 OnPropertyChanged();
             }
         }
-        public bool IsCall 
+        public bool IsCalling 
         { 
-            get => isCall;
+            get => _isCalling;
             set
             {
-                isCall = value;
+                _isCalling = value;
                 OnPropertyChanged();
             }
         }
         public bool IsStilja 
         { 
-            get => isStilja;
+            get => _isStilja;
             set
             {
-                isStilja = value;
+                _isStilja = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsStiljaVisible
+        {
+            get => _isStiljaVisible;
+            set
+            {
+                _isStiljaVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -100,10 +95,9 @@ namespace OnlyBelaSemafor.Models
         public void Reset()
         {
             Score = 0;
-            Placeholder = 0;
             Call = 0;
             IsBela = false;
-            IsCall = false;
+            IsCalling = false;
             IsStilja = false;
         }
     }

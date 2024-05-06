@@ -1,58 +1,60 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup x:Class="OnlyBelaSemafor.VictoryPopup"
-               xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<toolkit:Popup x:Class="OnlyBelaSemafor.Popups.VictoryPopup"
+               xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               CanBeDismissedByTappingOutsideOfPopup="False" Size="300, 300">
-    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}">
+               CanBeDismissedByTappingOutsideOfPopup="False"
+               Size="300, 300">
+  <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="50" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <!--  Header  -->
+    <Frame Grid.Row="0"
+           Margin="5,5,5,5" Padding="0"
+           BackgroundColor="{AppThemeBinding Light={StaticResource LightHeader},
+                                             Dark={StaticResource Gray600}}"
+           CornerRadius="8">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0"
+               Margin="10,0"
+               HorizontalOptions="Start" Text="PlaceholderText" VerticalOptions="Center" />
+        <ImageButton Grid.Column="1"
+                     Clicked="CloseButton_Clicked" HorizontalOptions="Center" Scale="0.5" Source="close_popup.png"
+                     VerticalOptions="Center" />
+      </Grid>
+    </Frame>
+
+    <!--  Body  -->
+    <Frame Grid.Row="1"
+           Margin="5,0,5,5" Padding="0"
+           BackgroundColor="{AppThemeBinding Light={StaticResource LightBody},
+                                             Dark={StaticResource Gray500}}"
+           CornerRadius="8">
+      <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-
-        <!--  Header  -->
-        <Frame Grid.Row="0"
-               Margin="5,5,5,5" Padding="0"
-               BackgroundColor="{AppThemeBinding Light={StaticResource LightHeader},
-                                                 Dark={StaticResource Gray600}}"
-               CornerRadius="8">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0"
-                       Margin="10,0"
-                       HorizontalOptions="Start" Text="PlaceholderText" VerticalOptions="Center" />
-                <ImageButton Grid.Column="1"
-                             Clicked="CloseButton_Clicked" HorizontalOptions="Center" Scale="0.5" Source="close_popup.png"
-                             VerticalOptions="Center" />
-            </Grid>
-        </Frame>
-
-        <!--  Body  -->
-        <Frame Grid.Row="1"
-               Margin="5,0,5,5" Padding="0"
-               BackgroundColor="{AppThemeBinding Light={StaticResource LightBody},
-                                                 Dark={StaticResource Gray500}}"
-               CornerRadius="8">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0"
-                       Margin="5" Padding="5"
-                       FontSize="Medium" HorizontalOptions="Center" Text="Pobjedio je tim" />
-                <Label x:Name="victoryLabel"
-                       Grid.Row="1"
-                       Margin="5" Padding="10"
-                       FontSize="Title" HorizontalOptions="Center" />
-                <Button Grid.Row="2" Margin="12" Clicked="NewGameButton_Clicked" Text="Nova Igra" />
-                <Button Grid.Row="3" Margin="12" Clicked="ExitButton_Clicked" Text="Izlaz iz aplikacije" />
-            </Grid>
-        </Frame>
-    </Grid>
+        <Label Grid.Row="0"
+               Margin="5" Padding="5"
+               FontSize="Medium" HorizontalOptions="Center" Text="Pobjedio je tim" />
+        <Label x:Name="victoryLabel"
+               Grid.Row="1"
+               Margin="5" Padding="10"
+               FontSize="Title" HorizontalOptions="Center" />
+        <Button Grid.Row="2" Margin="12" Clicked="NewGameButton_Clicked" Text="Nova Igra" />
+        <Button Grid.Row="3" Margin="12" Clicked="ExitButton_Clicked" Text="Izlaz iz aplikacije" />
+      </Grid>
+    </Frame>
+  </Grid>
 </toolkit:Popup>

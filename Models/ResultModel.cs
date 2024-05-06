@@ -1,31 +1,56 @@
-﻿using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace OnlyBelaSemafor.Models;
 
-namespace OnlyBelaSemafor.Models
+public class ResultModel
 {
-    public class ResultModel
+    private readonly TeamModel _teamOne;
+    private readonly TeamModel _teamTwo;
+	
+    private int GameScore => _teamOne.Call + _teamTwo.Call + _teamOne.Bela + _teamTwo.Bela + 162;
+	
+    public int TeamOneGameScore { get; private set; }
+    public int TeamTwoGameScore { get; private set; }
+	
+    public ResultModel(TeamModel teamOne, TeamModel teamTwo)
     {
-        //DID_IT 2.1: Make team1 score, team 2 score
-        //DID_IT 2.2: Make "call" variables for both teams
-        //DID_IT 2.3: Make "bela" variables for both teams
-
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-        public string team1Name { get; set; }
-        public int team1Score { get; set; }
-        public int team1Call { get; set; }
-        public int team1Bela { get; set; }
-        public int team1TotalScore { get; set; }
-        public string team2Name { get; set; }
-        public int team2Score { get; set; }
-        public int team2Call { get; set; }
-        public int team2Bela { get; set; }
-        public int team2TotalScore { get; set; }
-        //public int team1Stilja { get; set;}
-        //public int team2Stilja { get; set;}
+        _teamOne = teamOne;
+        _teamTwo = teamTwo;
+		
+        TeamOneGameScore = _teamOne.Score + _teamOne.Call + _teamOne.Bela;
+        TeamTwoGameScore = _teamTwo.Score + _teamTwo.Call + _teamTwo.Bela;
     }
+	
+    public void CalculateResult()
+    {
+        CheckFall();
+        CheckStilja();
+    }
+	
+    private void CheckFall()
+    {
+        if (_teamOne.IsCalling && TeamOneGameScore > 0 && TeamOneGameScore < GameScore / 2)
+        {
+            TeamOneGameScore = 0;
+            TeamTwoGameScore = GameScore;
+        }
+		
+        if (_teamTwo.IsCalling && TeamOneGameScore > 0 && TeamTwoGameScore < GameScore / 2)
+        {
+            TeamOneGameScore = GameScore;
+            TeamTwoGameScore = 0;                
+        }
+    }
+    private void CheckStilja()
+    {
+        if (_teamOne.IsStilja)
+        {
+            TeamOneGameScore = GameScore + 90;
+            TeamTwoGameScore = 0;                
+        }
+		
+        if (_teamTwo.IsStilja)
+        {
+            TeamOneGameScore = 0;
+            TeamTwoGameScore = GameScore + 90;
+        }
+    }	
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup x:Class="OnlyBelaSemafor.Popups.NewGamePopup"
+               xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               CanBeDismissedByTappingOutsideOfPopup="False"
+               Size="300, 400">
+
+
+  <Grid BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="50" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <!--  Header  -->
+    <Frame Grid.Row="0"
+           Margin="5,5,5,5" Padding="0"
+           BackgroundColor="{AppThemeBinding Light={StaticResource LightHeader},
+                                             Dark={StaticResource Gray600}}"
+           CornerRadius="8">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0"
+               Margin="10,0"
+               HorizontalOptions="Start" Text="Postavke:" VerticalOptions="Center" />
+        <ImageButton Grid.Column="1"
+                     Clicked="CloseButton_Clicked" HorizontalOptions="Center"
+                     IsVisible="{Binding IsCloseButtonVisible}"
+                     Scale="0.5" Source="close_popup.png" VerticalOptions="Center" />
+      </Grid>
+    </Frame>
+    <ScrollView Grid.Row="1">
+      <Frame Margin="5,0,5,5" Padding="0" BackgroundColor="{AppThemeBinding Light={StaticResource LightBody}, Dark={StaticResource Gray500}}" CornerRadius="8">
+
+        <StackLayout>
+          <Label Margin="5" Text="Prvi tim:" />
+          <Entry Margin="5" Keyboard="Text" Placeholder="Ime prvog tima" Text="{Binding TeamOneName}" />
+          <Label Margin="5" Text="Drugi tim:" />
+          <Entry Margin="5" Keyboard="Text" Placeholder="Ime drugog tima" Text="{Binding TeamTwoName}" />
+
+          <Label Margin="5" Text="Bodovi:" />
+          <CollectionView ItemsSource="{Binding ScoreDisplay}">
+            <CollectionView.ItemTemplate>
+              <DataTemplate>
+                <RadioButton Content="{Binding Score}" IsChecked="{Binding IsSelected}" />
+              </DataTemplate>
+            </CollectionView.ItemTemplate>
+          </CollectionView>
+
+          <Button Clicked="NewGameButton_Clicked" Text="Spremi promjene" />
+          <Label Text="{Binding Message}" />
+        </StackLayout>
+      </Frame>
+    </ScrollView>
+
+  </Grid>
+
+</toolkit:Popup>

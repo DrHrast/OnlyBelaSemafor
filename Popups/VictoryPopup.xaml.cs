@@ -1,35 +1,30 @@
 using CommunityToolkit.Maui.Views;
 
-namespace OnlyBelaSemafor;
+namespace OnlyBelaSemafor.Popups;
 
 public partial class VictoryPopup : Popup
 {
-	public VictoryPopup(MainPage mainPage, string victoriousTeam)
+	public VictoryPopup(string victoriousTeam)
 	{
         InitializeComponent();
-        this.mainPage = mainPage;
         this.victoriousTeam = victoriousTeam;
         victoryLabel.Text = this.victoriousTeam;
     }
 
-    private readonly MainPage mainPage;
     private readonly string victoriousTeam;
 
     private void CloseButton_Clicked(object sender, EventArgs e)
     {
-        this.Close();
-        mainPage.NewGame();
+        App.Current.Quit();
     }
 
     private void NewGameButton_Clicked(object sender, EventArgs e)
     {
-        this.Close();
-        mainPage.NewGame();
+        Close();
     }
 
     private void ExitButton_Clicked(object sender, EventArgs e)
     {
-        mainPage.NewGame();
-        mainPage.QuitGame();
+        App.Current.Quit();
     }
 }

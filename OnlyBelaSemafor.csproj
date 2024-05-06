@@ -63,6 +63,14 @@
 	  <MauiCss Remove="Text\**" />
 	  <MauiXaml Remove="Text\**" />
 	  <None Remove="Text\**" />
+	  <MauiXaml Update="Popups\NewGamePopup.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <Compile Update="Popups\NewGamePopup.xaml.cs">
+	    <DependentUpon>NewGamePopup.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -72,7 +80,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
-		<PackageReference Include="System.Data.SQLite" Version="1.0.118" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -83,9 +90,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Popups\HelpPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Popups\SettingsPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Popups\VictoryPopup.xaml">

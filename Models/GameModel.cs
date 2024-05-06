@@ -1,14 +1,18 @@
 ﻿using System.ComponentModel;
+using SQLite;
 
 namespace OnlyBelaSemafor.Models
 {
     public class GameModel : INotifyPropertyChanged
     {
-        private string? _teamOneName = "Team 1";
-        private string? _teamTwoName = "Team 2";
-        private int _scoreTarget;
+        [PrimaryKey]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+        
+        private string _teamOneName = "Team 1";
+        private string _teamTwoName = "Team 2";
+        private int _scoreTarget = 501;
 
-        public string? TeamOneName
+        public string TeamOneName
         {
             get => _teamOneName; 
             set
@@ -17,7 +21,7 @@ namespace OnlyBelaSemafor.Models
                 OnPropertyChanged(nameof(TeamOneName));
             }
         }
-        public string? TeamTwoName
+        public string TeamTwoName
         {
             get => _teamTwoName;
             set
@@ -26,7 +30,6 @@ namespace OnlyBelaSemafor.Models
                 OnPropertyChanged(nameof(TeamTwoName));
             }
         }        
-        
         public int ScoreTarget
         {
             get => _scoreTarget;
